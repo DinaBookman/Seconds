@@ -6,9 +6,8 @@ export class ProductsController {
 
     async getProducts(req, res, next) {
         try {
-
             const productsService = new ProductsService();
-            const resultItems = await usersService.getProducts();
+            const resultItems = await productsService.getProducts();
             return res.status(200).json(resultItems);
         }
         catch (ex) {

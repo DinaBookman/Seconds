@@ -1,10 +1,11 @@
 import { executeQuery } from './db.js';
 
-
+import { getAllQuery } from './queries.js';
 
 export class ProductsService {
 
     async getProducts() {
+        
         let queryProducts = getAllQuery("products");
         // queryComment+=getSpecialParamsQuery(["id","postId","name","email","body"],limit)
         const result =  await executeQuery(queryProducts);

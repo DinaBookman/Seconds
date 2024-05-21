@@ -5,6 +5,7 @@ const productsRouter = express.Router();
 const productsController = new ProductsController()
 
 productsRouter.get("/", productsController.getProducts)
+
 // usersRouter.get("/:id", userscontroller.getUserById)
 
 // usersRouter.post("/", userscontroller.addUser)

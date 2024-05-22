@@ -18,6 +18,7 @@ import { productsRouter } from './router/productsRouter.js';
 // import { user_loginsRouter } from './router/user_loginsRouter.js';
 // import {Errors} from './middleware/errors.js'
 const server = express();
+server.use('/uploads', express.static('uploads'));
 server.use(cors())
 server.use(express.json());
 server.use(bodyparser.json())
@@ -52,7 +53,7 @@ server.get('/', (req, res) => {
           console.log("No file upload");
       } else {
           console.log(req.file.filename)
-          var imgsrc = 'http://127.0.0.1:8080/uploads/' + req.file.filename
+          var imgsrc = 'http://localhost:8080/uploads/' + req.file.filename
           var insertData = "INSERT INTO seconds.products (ownerId,title,description,category,state,area,price,img,adDate)VALUES(1,'a','b',1,1,'J',100,?,'1000-01-01')"
           executeQuery(insertData, [imgsrc], (err, result) => {
               if (err) throw err

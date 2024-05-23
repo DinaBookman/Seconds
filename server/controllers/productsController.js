@@ -43,15 +43,17 @@ export class ProductsController {
             }
 
             const imgSrc = 'http://localhost:8080/uploads/' + req.file.filename;
-            const productItem = {
-                'ownerId': parseInt(req.body.ownerId),
-                'title': req.body.title,
-                'description': req.body.description,
-                'category': parseInt(req.body.category),
-                'state': parseInt(req.body.state),
-                'area': req.body.area,
-                'price': parseInt(req.body.price)
-            }
+            // const productItem = {
+            //     'ownerId': parseInt(req.body.ownerId),
+            //     'title': req.body.title,
+            //     'description': req.body.description,
+            //     'category': parseInt(req.body.category),
+            //     'state': parseInt(req.body.state),
+            //     'area': req.body.area,
+            //     'price': parseInt(req.body.price)
+            // }
+
+            const productItem = req.body;
                
             try {
                 const result = await productsService.addProduct(productItem, imgSrc);

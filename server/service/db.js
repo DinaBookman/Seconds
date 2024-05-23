@@ -11,6 +11,10 @@ async function executeQuery(query, params){
     });
 
     try {
+        console.log("Query:", query);
+        const bb =[1,'a','rrrrrrrr',1,1,'f',10000,'0999-12-31'];
+        console.log("Params:", params);
+        
         [results,] = await connection.execute(query,params);
 
     } catch (err) {

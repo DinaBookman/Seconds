@@ -1,34 +1,63 @@
+// import multer from 'multer';
+// import path from 'path';
 import { executeQuery } from './db.js';
-
-import { getAllQuery } from './queries.js';
+import { getAllQuery, addQuery } from './queries.js';
 
 export class ProductsService {
-
     async getProducts() {
-        
+        console.log("bbbbbbbb");
         let queryProducts = getAllQuery("products");
         // queryComment+=getSpecialParamsQuery(["id","postId","name","email","body"],limit)
-        const result =  await executeQuery(queryProducts);
+        const result = await executeQuery(queryProducts);
         return result;
     }
 
-//     async addComment(commentItem) {
-
-//          const queryComment=addQuery("comments",[ "postId" ,"name","email","body"]);
-//          const result= await executeQuery(queryComment,[ commentItem.postId ,commentItem.name ,commentItem.email,commentItem.body])
-//          return result;
-//     }
-//     async deleteComment(id) {
-
-//         const queryComment=deleteQuery("comments","id");
-//         const result= await executeQuery(queryComment,[id])
-//         return result;
-//    }
-//    async updateComment(commentItem) {
-
-//     const queryComment=updateQuery("comments",[ "name","body"]);
-//     const result= await executeQuery(queryComment,[commentItem.name,commentItem.body,commentItem.id])
-//     return result;
-// }
-
+    async addProduct(productItem, imgSrc) {
+        const { ownerId, title, description, category, state, area, price } = productItem;
+        const queryProduct = addQuery("products", [...Object.keys(productItem),'img','adDate']);
+        var nowDate = new Date();
+        var date = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
+        const result = await executeQuery(queryProduct, [...Object.values(productItem), imgSrc, date]);
+        return result;
+    }
 }
+
+// // const storage = multer.diskStorage({
+// //     destination: (req, file, callBack) => {
+// //         callBack(null, './uploads');
+// //     },
+// //     filename: (req, file, callBack) => {
+// //         callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+// //     }
+// // });
+
+// const upload = multer({ storage: storage }).single('image');
+
+// export class ProductsService {
+//     async addProduct(productItem, fileData) {
+//         return new Promise((resolve, reject) => {
+//             upload(fileData, async (err) => {
+//                 if (err) {
+//                     console.error('Error uploading file:', err);
+//                     reject('Error uploading file');
+//                     return;
+//                 }
+//                 if (!fileData) {
+//                     console.log("No file uploaded");
+//                     reject('No file uploaded');
+//                     return;
+//                 }
+//                 const imgSrc = 'http://localhost:8080/uploads/' + fileData.filename;
+//                 const { ownerId, title, description, category, state, area, price, adDate } = productItem;
+//                 const queryProduct = addQuery("products", productItem);
+//                 try {
+//                     const result = await executeQuery(queryProduct, [ownerId, title, description, category, state, area, price, imgSrc, adDate]);
+//                     resolve(result);
+//                 } catch (error) {
+//                     console.error('Error adding product:', error);
+//                     reject('Error adding product');
+//                 }
+//             });
+//         });
+//     }
+// }

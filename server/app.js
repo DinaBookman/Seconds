@@ -34,34 +34,41 @@ var storage = multer.diskStorage({
         callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
 })
-
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//       cb(null, 'uploads/'); // Ensure this directory exists
+//     },
+//     filename: (req, file, cb) => {
+//       cb(null, `${Date.now()}-${file.originalname}`);
+//     }
+//   });
 var upload = multer({
     storage: storage
 });
 
-//! Routes start
+// //! Routes start
 
-//route for Home page
-server.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../server', 'index.html'));
-  });
+// //route for Home page
+// server.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../server', 'index.html'));
+//   });
   
-  //@type   POST
-  //route for post data
-  server.post("/uploading", upload.single('image'), (req, res) => {
-      if (!req.file) {
-          console.log("No file upload");
-      } else {
-          console.log(req.file.filename)
-          var imgsrc = 'http://localhost:8080/uploads/' + req.file.filename
-          var insertData = "INSERT INTO seconds.products (ownerId,title,description,category,state,area,price,img,adDate)VALUES(1,'a','b',1,1,'J',100,?,'1000-01-01')"
-          executeQuery(insertData, [imgsrc], (err, result) => {
-              if (err) throw err
-              console.log("file uploaded")
-    res.send('Image Has been uploaded, please check your directory and mysql database....');
-          })
-      }
-  });
+//   //@type   POST
+//   //route for post data
+//   server.post("/uploading", upload.single('image'), (req, res) => {
+//       if (!req.file) {
+//           console.log("No file upload");
+//       } else {
+//           console.log(req.file.filename)
+//           var imgsrc = 'http://localhost:8080/uploads/' + req.file.filename
+//           var insertData = "INSERT INTO seconds.products (ownerId,title,description,category,state,area,price,img,adDate)VALUES(1,'a','b',1,1,'J',100,?,'1000-01-01')"
+//           executeQuery(insertData, [imgsrc], (err, result) => {
+//               if (err) throw err
+//               console.log("file uploaded")
+//     res.send('Image Has been uploaded, please check your directory and mysql database....');
+//           })
+//       }
+//   });
 server.use('/products',productsRouter);
 // server.use('/todos',todosRouter);
 // server.use('/posts',postsRouter);

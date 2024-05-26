@@ -2,9 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import { ProductsService } from "../service/productsService.js";
-// const TABLE = 'produc';
-// const SALTROUNDS =10;
-import bcrypt from 'bcrypt'
+
 const storage = multer.diskStorage({
     destination: (req, file, callBack) => {
         callBack(null, './uploads');
@@ -18,8 +16,9 @@ export class ProductsController {
 
     async getProducts(req, res, next) {
         try {
+            
             const productsService = new ProductsService();
-            const resultItems = await productsService.getProducts();
+            const resultItems = await productsService.getProducts(req.query);
             return res.status(200).json(resultItems);
         }
         catch (ex) {
@@ -54,7 +53,7 @@ export class ProductsController {
             // }
 
             const productItem = req.body;
-               
+
             try {
                 const result = await productsService.addProduct(productItem, imgSrc);
                 res.json({ message: 'Product added successfully', result });
@@ -78,11 +77,11 @@ export class ProductsController {
         //     next(err)
         // }
     }
-    // async getUserById(req, res, next) {
+    // async getByParamsQuery(req, res, next) {
     //     try {
-    //         const usersService = new DataService();
-    //         const resultItem = await usersService.getById(TABLE, req.params.id);
-    //         res.status(200).json( resultItem );
+    //         const productsService = new ProductsService();
+    //         const resultItem = await productsService.getProductsById("products", req.params.id);
+    //         res.status(200).json(resultItem);
     //     }
     //     catch (ex) {
     //         const err = {}

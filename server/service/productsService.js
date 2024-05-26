@@ -1,19 +1,24 @@
 // import multer from 'multer';
 // import path from 'path';
 import { executeQuery } from './db.js';
-import { getAllQuery, addQuery } from './queries.js';
+import { getQuery, addQuery } from './queries.js';
 
 export class ProductsService {
-    async getProducts() {
-
-        let queryProducts = getAllQuery("products");
-
-        const result = await executeQuery(queryProducts);
+    
+    async getProducts(params) {
+        console.log("jjjjjjj",params)
+        let queryProducts = getQuery("products",params);
+        console.log("jjjjjjj",queryProducts)
+        const result = await executeQuery(queryProducts.query,[...queryProducts.params]);
         return result;
     }
-
+    // async getProductsById(table,id) {
+    //     const query  = getByIdQuery(table);
+    //     const result = await executeQuery(query , [id]);
+    //     return result;
+    // }
     async addProduct(productItem, imgSrc) {
-        const { ownerId, title, description, category, state, area, price } = productItem;
+        //const { ownerId, title, description, category, state, area, price } = productItem;
         const queryProduct = addQuery("products", [...Object.keys(productItem),'img','adDate']);
         var nowDate = new Date();
         var date = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
@@ -21,6 +26,7 @@ export class ProductsService {
         return result;
     }
 }
+
 
 // // const storage = multer.diskStorage({
 // //     destination: (req, file, callBack) => {

@@ -57,4 +57,30 @@ export class ProductsController {
 
     }
 
+    async deleteProduct(req, res,next) {
+        try {
+            const productsService = new ProductsService();
+            await productsService.deleteProduct(req.params.id);
+             res.status(200).json({ status: 200 });
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
+    async updateProduct(req, res,next) {
+        try {
+            const productsService = new ProductsService();
+            await productsService.updateProduct(req.body,req.params.id);
+             res.status(200).json({ status: 200 })
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
 }

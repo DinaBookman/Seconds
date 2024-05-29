@@ -44,4 +44,14 @@ const addQuery = (table, columns) => {
     const query = `INSERT INTO ${escapeId(table)} (${columns.map((column) => escapeId(column))}) VALUES (${columns.map(() => '?')})`;
     return query
 }
-export { getQuery, addQuery }
+const deleteQuery = (table) => {
+    const query = `DELETE FROM ${escapeId(table)} WHERE (id = ?)`;
+    return query
+}
+
+const updateQuery = (table,columns) => {
+    const columnsNames=Object.keys(columns);
+    const query = `UPDATE ${escapeId(table)} SET ${columnsNames.map((column)=>(escapeId(column)+'=?'))} WHERE (id = ?)`;
+    return query
+}
+export { getQuery, addQuery,deleteQuery,updateQuery }

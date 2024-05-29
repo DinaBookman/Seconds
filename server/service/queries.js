@@ -6,6 +6,7 @@ function getQuery(table, params, orderBy, limit, offset) {
     const queryParams = [];
 
     params.map(param => {
+  
         if (param.value!== undefined) {
 
             if (param.comparison) {
@@ -39,6 +40,10 @@ function getQuery(table, params, orderBy, limit, offset) {
     return { sql, queryParams };
 }
 
+const getByIdQuery = (table) => {
+    const query = `SELECT * FROM ${escapeId(table)} where id = ?`;
+    return query
+}
 
 const addQuery = (table, columns) => {
     const query = `INSERT INTO ${escapeId(table)} (${columns.map((column) => escapeId(column))}) VALUES (${columns.map(() => '?')})`;
@@ -54,4 +59,4 @@ const updateQuery = (table,columns) => {
     const query = `UPDATE ${escapeId(table)} SET ${columnsNames.map((column)=>(escapeId(column)+'=?'))} WHERE (id = ?)`;
     return query
 }
-export { getQuery, addQuery,deleteQuery,updateQuery }
+export { getQuery,getByIdQuery, addQuery,deleteQuery,updateQuery }

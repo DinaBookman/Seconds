@@ -5,20 +5,22 @@ import { getQuery, addQuery } from './queries.js';
 
 export class ProductsService {
     
-    async getProducts(params) {
-        console.log("jjjjjjj",params)
-        let queryProducts = getQuery("products",params);
-        console.log("jjjjjjj",queryProducts)
-        const result = await executeQuery(queryProducts.query,[...queryProducts.params]);
+    async getProducts(url) {
+        const { category, priceMin, priceMax,area, state,sortBy, direction, limit, page } = url;
+        const params=[
+            { field: 'category', comparison: undefined, value: category },
+            { field: 'priceMin', comparison: '>=', value: priceMin },
+            { field: 'priceMax', comparison: '<=', value: priceMax },
+            { field: 'area', comparison: undefined, value: area },
+            { field: 'state', comparison: undefined, value: state }
+        ]
+        const orderBy= {'column':sortBy,'direction':direction};
+        let queryProducts = getQuery("seconds.products",params,orderBy,limit, page );
+        const result = await executeQuery(queryProducts.sql,queryProducts.queryParams);
         return result;
     }
-    // async getProductsById(table,id) {
-    //     const query  = getByIdQuery(table);
-    //     const result = await executeQuery(query , [id]);
-    //     return result;
-    // }
+
     async addProduct(productItem, imgSrc) {
-        //const { ownerId, title, description, category, state, area, price } = productItem;
         const queryProduct = addQuery("products", [...Object.keys(productItem),'img','adDate']);
         var nowDate = new Date();
         var date = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();

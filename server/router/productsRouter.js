@@ -11,10 +11,9 @@ productsRouter.get("/", productsController.getProducts)
 
 productsRouter.post('/', productsController.addProduct);
 
+productsRouter.delete("/:id", productsController.deleteProduct)
 
-//usersRouter.post("/", userscontroller.addUser)
-// usersRouter.delete("/:id", userscontroller.deleteUser)
-// usersRouter.put("/:id", userscontroller.updateUser)
+productsRouter.patch("/:id", productsController.updateProduct)
 
 export {
     productsRouter

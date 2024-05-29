@@ -1,38 +1,47 @@
-const getQuery = (table, params) => {
-    let query = `SELECT * FROM seconds.${table} where 1=1 `;
+
+import { escapeId } from './db.js';
+
+function getQuery(table, params, orderBy, limit, offset) {
+    let sql = `SELECT * FROM ${escapeId(table)} WHERE 1=1`;
     const queryParams = [];
 
-    if (params.category) {
-        query += ' AND category = ?';
-        queryParams.push(params.category);
-    }
-    if (params.priceMin) {
-        query += ' AND price >= ?';
-        queryParams.push(params.priceMin);
-    }
-    if (params.priceMax) {
-        query += ' AND price <= ?';
-        queryParams.push(params.priceMax);
-    }
-    if (params.area) {
-        query += ' AND area = ?';
-        queryParams.push(params.area);
+    params.map(param => {
+        if (param.value!== undefined) {
+
+            if (param.comparison) {
+                sql += ` AND ${escapeId(param.field)} ${param.comparison} ?`;
+            } else {
+                console.log(param)
+                sql += ` AND ${escapeId(param.field)} = ?`;
+            }
+            queryParams.push(param.value);
+        }
+    });
+
+
+
+    if (orderBy.column) {
+        sql += ` ORDER BY ${escapeId(orderBy.column)} ${orderBy.direction === 'DESC' ? 'DESC' : 'ASC'}`;
     }
 
-    if (params.state) {
-        query += ' AND state = ?';
-        queryParams.push(params.state);
+    // Add LIMIT clause if specified
+    if (limit !== undefined) {
+        sql += ' LIMIT ?';
+        queryParams.push(limit);
     }
-    if (params.orderBy) {
-        query += ` ORDER BY ${params.orderBy.column}  ${orderBy.direction === 'DESC' ? 'DESC' : 'ASC'}`;
+
+    // Add OFFSET clause if specified
+    if (offset !== undefined) {
+        sql += ' OFFSET ?';
+        queryParams.push(offset);
     }
-    // console.log("jjjjjjj")
-    // query += ' LIMIT ? OFFSET ?';
-    // queryParams.push(limit, offset);
-    return ({ query: query, params: queryParams })
+
+    return { sql, queryParams };
 }
+
+
 const addQuery = (table, columns) => {
-    const query = `INSERT INTO seconds.${table} (${columns.map((column) => column)}) VALUES (${columns.map((column) => '?')})`;
+    const query = `INSERT INTO ${escapeId(table)} (${columns.map((column) => escapeId(column))}) VALUES (${columns.map(() => '?')})`;
     return query
 }
 export { getQuery, addQuery }

@@ -22,6 +22,11 @@ async function executeQuery(query, params){
     return results;
 }
 
-export{
-    executeQuery
+function escapeId(identifier) {
+    return mysql.escapeId(identifier);
 }
+
+export {
+    executeQuery,
+    escapeId
+};

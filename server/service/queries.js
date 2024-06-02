@@ -12,16 +12,18 @@ function getQuery(table, params, orderBy, limit, offset) {
             if (param.comparison) {
                 sql += ` AND ${escapeId(param.field)} ${param.comparison} ?`;
             } else {
-                console.log(param)
+
                 sql += ` AND ${escapeId(param.field)} = ?`;
             }
             queryParams.push(param.value);
         }
+
     });
 
 
 
-    if (orderBy.column) {
+    if (orderBy&&orderBy.column) {
+
         sql += ` ORDER BY ${escapeId(orderBy.column)} ${orderBy.direction === 'DESC' ? 'DESC' : 'ASC'}`;
     }
 
@@ -36,6 +38,7 @@ function getQuery(table, params, orderBy, limit, offset) {
         sql += ' OFFSET ?';
         queryParams.push(offset);
     }
+
 
     return { sql, queryParams };
 }

@@ -15,7 +15,7 @@ import { productsRouter } from './router/productsRouter.js';
 // import { postsRouter } from './router/postsRouter.js';
 // import { commentsRouter } from './router/commentsRouter.js';
 import { usersRouter } from './router/usersRouter.js';
-// import { user_loginsRouter } from './router/user_loginsRouter.js';
+import { userLoginRouter } from './router/userLoginRouter.js';
 // import {Errors} from './middleware/errors.js'
 const server = express();
 server.use('/uploads', express.static('uploads'));
@@ -26,23 +26,12 @@ server.use(bodyparser.urlencoded({
     extended: true
 }))
 
-var storage = multer.diskStorage({
-    destination: (req, file, callBack) => {
-        callBack(null, './uploads')     // './uploads/' directory name where save the file
-    },
-    filename: (req, file, callBack) => {
-        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-    }
-})
 
-var upload = multer({
-    storage: storage
-});
 
 
 server.use('/products',productsRouter);
 server.use('/users',usersRouter);
-//server.use('/user_logins',user_loginsRouter)
+server.use('/userLogin',userLoginRouter)
 // server.use('/posts',postsRouter);
 // server.use('/comments',commentsRouter);
 

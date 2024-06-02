@@ -1,6 +1,7 @@
 
 
 import { UsersService } from "../service/usersService.js";
+import { UserLoginService } from "../service/userLoginService.js";
 
 export class UserController {
 
@@ -8,7 +9,7 @@ export class UserController {
         try {
             const usersService = new UsersService();
             const resultItem = await usersService.getUserById(req.params.id);
-            res.status(200).json( resultItem );
+            res.status(200).json(resultItem);
         }
         catch (ex) {
             const err = {}
@@ -19,23 +20,24 @@ export class UserController {
     }
 
 
-    // async addUser(req, res, next) {
-    //     try {
-    //         const usersService = new DataService();
-    //         const { name, email, street, city, zipcode, phone, website, username, password } = req.body;
-    //         const resultItem = await usersService.add(TABLE, {name, email, street, city, zipcode, phone, website });
-    //         const userId= await resultItem.insertId;
-    //         const pswd= await bcrypt.hash(password, SALTROUNDS);
-    //         await usersService.add('user_logins', { userId:userId, username:username,password:pswd });
-    //         res.status(200).json(userId);
-    //     }
-    //     catch (ex) {
-    //         const err = {}
-    //         err.statusCode = 500;
-    //         err.message = ex;
-    //         next(err)
-    //     }
-    // }
+    async addUser(req, res, next) {
+        try {
+            const usersService = new UsersService();
+            const {name,email ,phone ,rating ,reviews,username,password}=req.body;
+            const resultItem = await usersService.addUser({name:name,email:email ,phone:phone ,rating:rating ,reviews:reviews});
+            const userId=  resultItem.insertId;
+
+            const userLoginService = new UserLoginService();
+            await userLoginService.addUserLogin( { userId:userId, username:username,password:password  });
+            res.status(200).json(userId);
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
 
 
     // async deleteUser(req, res, next) {

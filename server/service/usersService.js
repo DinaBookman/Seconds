@@ -7,4 +7,10 @@ export class UsersService {
         const result = await executeQuery(query, [id]);
         return result;
     }
+
+    async addUser(newUser){
+        const query = addQuery('users',[...Object.keys(newUser)]);
+        const result = await executeQuery(query,[...Object.values(newUser)]);
+        return result;
+    }
 }

@@ -18,12 +18,8 @@ function App() {
             <Route path="/" element={<Navigate to={'/home'} />}/>
             <Route path="home" element={<Home/>}>
               <Route path="connect" element={<Login/>}/>
-              <Route path='sofas' element={<Products/>}/>
-              <Route path='tables' element={<Products/>}/>
-              <Route path='beds' element={<Products/>} />
-              <Route path='chairs' element={<Products/>} />
-              <Route path='closets' element={<Products/>} />
-              <Route path='all' element={<Products/>} />
+              <Route path="all" element={<Products/>}/>
+              <Route path=':category' element={<Products/>}/>
               </Route>
             <Route path="*" element={<FailToLoadPage />} />
           </Routes>

@@ -6,7 +6,7 @@ import Navbar from './NavMenu'
 function Home() {
   return (
     <>
-     <Navbar/> 
+     <Navbar/>
      <Outlet/>
     </>
   )

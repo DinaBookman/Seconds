@@ -1,9 +1,8 @@
 import React, { createContext, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-
 import './App.css'; 
 import Home from './components/Home.jsx';
-//import Login from './components/login.jsx'
+import Login from './components/Login.jsx'
 //import Register from './components/Register.jsx'
 import Products from './components/Products.jsx'
 import FailToLoadPage from './components/FailToLoadPage.jsx'

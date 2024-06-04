@@ -1,20 +1,13 @@
 import React, { createContext, useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import BasicDemo from './BasicDemo';
- 
- 
- 
-
+import { BrowserRouter, Routes, Route, Navigate, Outlet, NavLink } from "react-router-dom"
+import style from  '../components/Home.module.css'
+import Navbar from './NavMenu'
+//import NavMenu from './NavMenu';
 function Home() {
-  //const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")))
-  //console.log(currentUser)
-  //const currentPage = currentUser ? `/users/${currentUser.id}/home` : "/login";
-   
- 
   return (
     <>
-     <BasicDemo/>
-       
+     <Navbar/> 
+     <Outlet/>
     </>
   )
 } export default Home

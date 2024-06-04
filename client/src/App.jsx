@@ -10,21 +10,21 @@ import FailToLoadPage from './components/FailToLoadPage.jsx'
 export const UserContext = createContext();
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")))
-  console.log(currentUser)
+  //const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")))
+  //console.log(currentUser)
   //const currentPage = currentUser ? `/users/${currentUser.id}/home` : "/login";
   return (
     <> <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to={'/home'} />}/>
             <Route path="home" element={<Home/>}>
-              {/*<Route path="connect" element={<Login/>}/>*/}
-              <Route path='Sofas' element={<Products/>} />
-              <Route path='Tables' element={<Products/>} />
-              <Route path='Beds' element={<Products/>} />
-              <Route path='Chairs' element={<Products/>} />
+              <Route path="connect" element={<Login/>}/>
+              <Route path='sofas' element={<Products/>}/>
+              <Route path='tables' element={<Products/>}/>
+              <Route path='beds' element={<Products/>} />
+              <Route path='chairs' element={<Products/>} />
               <Route path='closets' element={<Products/>} />
-              <Route path='All' element={<Products/>} />
+              <Route path='all' element={<Products/>} />
               </Route>
             <Route path="*" element={<FailToLoadPage />} />
           </Routes>

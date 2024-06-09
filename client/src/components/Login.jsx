@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext,useRef  } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App'
 import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha'
-import 'dotenv/config' 
+
 
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
   //const [currentUser, setCurrentUser] = useContext(UserContext);
   const [exist, setExist] = useState(true);
   const navigate = useNavigate();
-
+  const captchaRef = useRef(null)
 
   const {
     register,
@@ -46,10 +46,12 @@ const Login = () => {
   // }
 
   const logIn = (data) => {
-
+    const token = captchaRef.current.getValue();
+    captchaRef.current.reset();
+    inputVal={username: data.username, password: data.password }
     fetch(`http://localhost:8080/userLogin`, {
       method: 'POST',
-      body: JSON.stringify({ username: data.username, password: data.password }),
+      body: JSON.stringify({ inputVal, token }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
@@ -77,7 +79,10 @@ const Login = () => {
             required: "password is required.",
           })} />
         {errors.password ? <p>{errors.password.message}</p> : <br />}
-        <ReCAPTCHA sitekey={process.env.REACT_APP_SITE_KEY}/>
+        <ReCAPTCHA sitekey='6Le45PQpAAAAAMmqahVM7Clw7wrXviXTkesVYVMY'
+        ref={captchaRef}
+        />
+        <div className="h-captcha" data-sitekey="b8cd8c24-4840-4155-ba11-bdc0c7f9a353"></div>
         <input type="submit" value="Log In" />
       </form>
       <div>new here? <Link style={{ textDecoration: 'underline' }} to={'/auth/register'}>please sign up</Link></div>

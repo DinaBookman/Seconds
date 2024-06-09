@@ -177,7 +177,8 @@ function Products() {
       {products.map((product, i) => {
         //title,state,area,price,img
         return <div key={i}>
-          <img style={{ width: 200, height: 150 }} src={product.img} alt={product.description} />
+          <img src={product.img} alt={product.title} />
+          <span>{product.area}</span>
           <span>{product.price}</span>
           <span>{product.state}</span>
         </div>

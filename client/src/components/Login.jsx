@@ -1,56 +1,87 @@
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../App";
-function Login() {
-  function hash(string) {
+import React, { useState, useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../App'
+import { useForm } from 'react-hook-form';
+import ReCAPTCHA from 'react-google-recaptcha'
+import 'dotenv/config' 
 
-    return createHash('sha256').update(string).digest('hex');
-  
+
+const Login = () => {
+
+  //const [currentUser, setCurrentUser] = useContext(UserContext);
+  const [exist, setExist] = useState(true);
+  const navigate = useNavigate();
+
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+
+  // const goToHome = (data) => {
+  //   setCurrentUser({
+  //     id: data.id,
+  //     name: data.name,
+  //     email: data.email,
+  //     street: data.street,
+  //     city: data.city,
+  //     zipcode: data.zipcode,
+  //     phone: data.phone,
+  //     website: data.website,
+  //   })
+  //   localStorage.setItem('currentUser', JSON.stringify({ username: data.username, id: data.id }));
+  //   navigate(`/home/users/${data.id}`)
+  // }
+
+
+  // const getUserDetails = (userId) => {
+  //   fetch(`http://localhost:8080/users/${userId}`)
+  //     .then(async response => {
+  //       const data = await response.json();
+  //       goToHome(data[0])
+  //     })
+  //     .catch(err => console.error(err))
+  // }
+
+  const logIn = (data) => {
+
+    fetch(`http://localhost:8080/userLogin`, {
+      method: 'POST',
+      body: JSON.stringify({ username: data.username, password: data.password }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }
+    )
+      .then(async response => {
+        const userId = await response.json();//is it safe to get the data????
+        (userId == false) ? (setExist(false),console.log("ggggggg")) : (setExist(true),console.log("jjjjj"))
+      })
   }
 
-    const navigate = useNavigate();
-    const { setCurrentUser } = useContext(UserContext);
-    function loginFunc(event) {
-        event.preventDefault();
-        const name=event.target[0].value;
-        const nameAndPwd={
-          "userName":name,
-          "password":event.target[1].value
-        }
-        const params = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(nameAndPwd)
-      };
-     
-        fetch(`http://localhost:8080/login/check`,params)
-            .then(response => response.json())
-            .then(response => response.length === 0 ? alert("No such user. Please register") : successLogin(response,name))
-            .catch(error => console.error("Error during login:", error));
-    }
-    
-    function successLogin(user,name) {
-      
-        fetch(`http://localhost:8080/users/?userName=${name}`)
-            .then(response => response.json())
-            .then(res=>{console.log(...res);
-              console.log("user's login was successful")
-              localStorage.setItem("currentUser",JSON.stringify(...res));
-              setCurrentUser(...res)
-              navigate(`/users/${[...res][0].id}/home`)
 
-            })
-    }
-
-    return (<>
-        <form onSubmit={loginFunc}>
-            <p>UserName</p>
-            <input placeholder="Enter UserName..." required></input><br />
-            <p >Password</p>
-            <input type="password" placeholder="Enter Pasword..." required></input><br /><div />
-            <button type="submit">Login</button>
-        </form>
-        <h3>To register click </h3>
-        <Link to={"/register"}> Here</Link>
-    </>)
-} export default Login
+  return (
+    <>
+      <h1>login</h1>
+      {!exist && <div>Incorrect username or password</div>}
+      <form noValidate onSubmit={handleSubmit(logIn)}>
+        <input type='text' name='username' placeholder='username'
+          {...register("username", {
+            required: "username is required.",
+          })} />
+        {errors.username ? <p>{errors.username.message}</p> : <br />}
+        <input type="password" name="password" id="" placeholder='password'
+          {...register("password", {
+            required: "password is required.",
+          })} />
+        {errors.password ? <p>{errors.password.message}</p> : <br />}
+        <ReCAPTCHA sitekey={process.env.REACT_APP_SITE_KEY}/>
+        <input type="submit" value="Log In" />
+      </form>
+      <div>new here? <Link style={{ textDecoration: 'underline' }} to={'/auth/register'}>please sign up</Link></div>
+    </>
+  )
+}
+export default Login

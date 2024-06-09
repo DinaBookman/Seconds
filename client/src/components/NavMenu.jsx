@@ -21,7 +21,7 @@ function Navbar() {
           <p className={`${styles.logo}`}>Seconds</p>
           <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
             <li onClick={removeActive}>
-            <NavLink to="connect">Connect</NavLink><br />
+            <NavLink to="/auth/login">Connect</NavLink><br />
             
             </li>
             <li onClick={removeActive}>

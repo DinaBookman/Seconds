@@ -6,6 +6,7 @@ import Login from './components/Login.jsx'
 //import Register from './components/Register.jsx'
 import Products from './components/Products.jsx'
 import FailToLoadPage from './components/FailToLoadPage.jsx'
+import ProductUploadForm from './components/ProductUploadForm.jsx';
 export const UserContext = createContext();
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               <Route path=':category' element={<Products/>}/>
               </Route>
             <Route path="*" element={<FailToLoadPage />} />
+            <Route path="/upload" element={<ProductUploadForm />} />
           </Routes>
           </BrowserRouter>
            

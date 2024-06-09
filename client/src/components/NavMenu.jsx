@@ -37,6 +37,9 @@ function Navbar() {
             <NavLink to="closets">Closets</NavLink><br />
             </li>
             <li onClick={removeActive}>
+            <NavLink to="beds">Beds</NavLink><br />
+            </li>
+            <li onClick={removeActive}>
             <NavLink to="all">All</NavLink><br />
             </li>
             <li onClick={removeActive}>

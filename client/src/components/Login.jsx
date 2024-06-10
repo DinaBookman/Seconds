@@ -48,10 +48,10 @@ const Login = () => {
   const logIn = (data) => {
     const token = captchaRef.current.getValue();
     captchaRef.current.reset();
-    inputVal={username: data.username, password: data.password }
+    console.log(data)
     fetch(`http://localhost:8080/userLogin`, {
       method: 'POST',
-      body: JSON.stringify({ inputVal, token }),
+      body: JSON.stringify({data, token }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },

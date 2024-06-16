@@ -139,7 +139,7 @@
 
 import React from "react";
 import { useState, useEffect, useContext } from 'react'
-import { useParams, useNavigate  } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // import { useHistory } from 'react-router';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
@@ -152,9 +152,11 @@ import { classNames } from 'primereact/utils';
 // import { ProductService } from './service/ProductService';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
+import FullProduct from "./FullProduct";
 function Products() {
 
   const [products, setProducts] = useState([]);
+  const [fullView, setFullView] = useState(-1);
   const { category } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
@@ -176,12 +178,12 @@ function Products() {
     <div>
       {products.map((product, i) => {
         //title,state,area,price,img
-        return <div key={i}>
+        return fullView != i ? <div onClick={() => setFullView(i)} key={i}>
           <img src={product.img} alt={product.title} />
           <span>{product.area}</span>
           <span>{product.price}</span>
           <span>{product.state}</span>
-        </div>
+        </div> : <FullProduct product={product} key={i} />
       }
       )}
     </div>

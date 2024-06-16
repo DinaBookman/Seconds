@@ -17,7 +17,12 @@ export class UserLoginController {
             console.log(userData.data)
             const resultItem = await userLoginService.checkUserLogin(userData.data);
             console.log(resultItem)
-            res.status(200).json(resultItem);
+            res.cookie('user', JSON.stringify({ id: userData.data.id, username: userData.data.username }), {
+                httpOnly: true,
+                secure: false, // Set to true in production with HTTPS
+                maxAge: 24 * 60 * 60 * 1000 // 1 day
+              });
+            res.status(200).json(resultItem)
         }
         catch (ex) {
             const err = {}

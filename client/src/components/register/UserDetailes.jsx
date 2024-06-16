@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import { UserContext } from '../../App'
 
 const UserDetailes = ({ username, password }) => {
@@ -9,6 +11,7 @@ const UserDetailes = ({ username, password }) => {
 
     const {
         register,
+        control,
         handleSubmit,
         formState: { errors }
     } = useForm();
@@ -34,11 +37,8 @@ const UserDetailes = ({ username, password }) => {
             email: data.email,
             rating:0,
             reviews:"",
-            // phone: data.street,
-            // city: data.city,
-            // zipcode: data.zipcode,
+
             phone: data.phone,
-            // website: data.website,
             username:username,
             password:password
         };
@@ -79,55 +79,36 @@ const UserDetailes = ({ username, password }) => {
                     })} />
                 {errors.email && <p>{errors.email.message}</p>}
 
-                {/* <label>address</label>
-
-                <input type='text' placeholder='street' name='street'
-                    {...register("street", {
-                        required: "street is required.",
-                        pattern: {
-                            value: /^[a-zA-Z.  - 0-9]+$/,
-                            message: "street is not valid."
-                        }
-                    })} />
-                {errors.street && <p>{errors.street.message}</p>}
 
 
-                <input type='text' name="city" placeholder='city'
-                    {...register("city", {
-                        required: "city is required.",
-                        pattern: {
-                            value: /^[a-zA-Z -]+$/,
-                            message: "city is not valid."
-                        }
-                    })} />
-                {errors.city && <p>{errors.city.message}</p>}
 
-                <input type='text' name="zipcode" placeholder='zipcode'
-                    {...register("zipcode", {
-                        required: "zipcode is required.",
-                        pattern: {
-                            value: /^\d{5}[-\s]?(?:\d{4})?$/,
-                            message: "zipcode is not valid."
-                        }
-                    })} />
-                {errors.zipcode && <p>{errors.zipcode.message}</p>} */}
-
-
-                <input type="tel" name="phone" placeholder='phone'
-                    {...register("phone", {
-                        required: "phone is required.",
-                        pattern: {
-                            value: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
-                            message: "phone is not valid."
-                        }
-                    })} />
-                {errors.phone && <p>{errors.phone.message}</p>}
-{/* 
-                <input type="text" name="website" placeholder='website'
-                    {...register("website", {
-                        required: "website is required.",
-                    })} />
-                {errors.website && <p>{errors.website.message}</p>} */}
+                <div>
+        <label htmlFor="phone">Phone Number</label>
+        <Controller
+          name="phone"
+          control={control}
+          rules={{
+            required: 'Phone number is required',
+            validate: (value) => {
+              const phoneNumber = value.replace(/\D/g, '');
+              return phoneNumber.length >= 10 && phoneNumber.length <= 14 || 'Invalid phone number format';
+            }
+          }}
+          render={({ field }) => (
+            <PhoneInput
+              country={'us'}
+              value={field.value}
+              onChange={field.onChange}
+              inputProps={{
+                name: 'phone',
+                required: true,
+                autoFocus: true
+              }}
+            />
+          )}
+        />
+        {errors.phone && <p>{errors.phone.message}</p>}
+      </div>
 
                 <input type="submit" value="add detailes" />
             </form>

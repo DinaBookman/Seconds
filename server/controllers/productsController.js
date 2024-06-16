@@ -34,7 +34,6 @@ export class ProductsController {
         const productsService = new ProductsService();
         const imgSrc = 'http://localhost:8080/uploads/' + req.file.filename;
 
-
         const productItem = req.body;
 
         try {

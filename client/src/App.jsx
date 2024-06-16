@@ -23,6 +23,7 @@ function App() {
           {/* <Route path="connect" element={<Login />} /> */}
           <Route path="all" element={<Products />} />
           <Route path=':category' element={<Products />} />
+          <Route path="post" element={<ProductUploadForm />} />
         </Route>
         <Route path="*" element={<FailToLoadPage />} />
         <Route path='/auth'>
@@ -30,7 +31,7 @@ function App() {
           <Route path="register" element={<Register />} />
         </Route>
 
-        <Route path="/upload" element={<ProductUploadForm />} />
+        
       </Routes>
     </BrowserRouter>
 

@@ -19,14 +19,13 @@ import { usersRouter } from './router/usersRouter.js';
 import { userLoginRouter } from './router/userLoginRouter.js';
 // import {Errors} from './middleware/errors.js'
 const server = express();
-// server.use('/uploads', express.static('uploads'));
+server.use('/uploads', express.static('uploads'));
 const corsOptions ={
     origin:'*', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200,
  }
 server.use(cors({
-    origin: 'http://localhost:5173',
     credentials: true
   }))
 server.use(express.json());

@@ -9,8 +9,8 @@ export class ProductsService {
         const { category, priceMin, priceMax, area, state, sortBy, direction, limit, page } = url;
         const params = [
             { field: 'category', comparison: undefined, value: category },
-            { field: 'priceMin', comparison: '>=', value: priceMin },
-            { field: 'priceMax', comparison: '<=', value: priceMax },
+            { field: 'price', comparison: '>=', value: priceMin },
+            { field: 'price', comparison: '<=', value: priceMax },
             { field: 'area', comparison: undefined, value: area },
             { field: 'state', comparison: undefined, value: state }
         ]

@@ -15,14 +15,20 @@ import { classNames } from 'primereact/utils';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
 import FullProduct from "./FullProduct";
+import SearchSlider from "./SearchSlider";
 function Products() {
 
   const [products, setProducts] = useState([]);
   const [fullView, setFullView] = useState(-1);
+  const [searchQuery, setSearchQuery] = useState("");
   const { category } = useParams();
   const navigate = useNavigate();
+  useEffect(()=>{
+    setSearchQuery(`category=${category}`)
+  },[navigate]);
+
   useEffect(() => {
-    fetch(`http://localhost:8080/products?category=${category}`)
+    fetch(`http://localhost:8080/products?${searchQuery}`)
       .then((response) => response.json())
       .then((response) => {
         console.log(response)
@@ -31,13 +37,13 @@ function Products() {
       .catch((err) => {
         console.error(err);
       });
-  }, [navigate])
+  }, [navigate,searchQuery])
 
 
 
   return <>
     <h1>products</h1>
-    
+    <SearchSlider setSearchQuery={setSearchQuery}/>
     <div>
       {products.map((product, i) => {
         //title,state,area,price,img

@@ -1,26 +1,20 @@
 
 import React from "react";
 import { useState, useEffect, useContext } from 'react'
-import { useParams, useNavigate } from "react-router-dom";
-// import { useHistory } from 'react-router';
-import { Button } from 'primereact/button';
-import { DataView } from 'primereact/dataview';
-import { Rating } from 'primereact/rating';
-import { Tag } from 'primereact/tag';
-import { classNames } from 'primereact/utils';
-
-// import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
-
-// import { ProductService } from './service/ProductService';
+import { useParams, useNavigate, Outlet } from "react-router-dom";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
 import FullProduct from "./FullProduct";
-import SearchSlider from "./SearchSlider";
+import Searches from "./Searches";
+import "./Products.css"; // Import your CSS file for custom styles
+
 function Products() {
 
   const [products, setProducts] = useState([]);
-  const [fullView, setFullView] = useState(-1);
+  const [fullView, setFullView] = useState(-1); // State to track which product is in full view
   const [searchQuery, setSearchQuery] = useState("");
+  const [address, setAddress] = useState('');
+
   const { category } = useParams();
   const navigate = useNavigate();
   useEffect(()=>{
@@ -42,22 +36,28 @@ function Products() {
 
 
   return <>
-    <h1>products</h1>
-    <SearchSlider setSearchQuery={setSearchQuery}/>
-    <div>
+   <div className="products-container">
+   <div className="fixed-searches">
+    <Searches address={address} setAddress={setAddress} setSearchQuery={setSearchQuery}/>
+    </div>
+    {/* <PlaceAutocomplete address={address} setAddress={setAddress}/>
+    <SearchSlider setSearchQuery={setSearchQuery}/> */}
+    <div className="products-list">
       {products.map((product, i) => {
-        //title,state,area,price,img
-        return  <div onClick={() => setFullView(i)} key={i}>
+        {console.log(product.id)}
+        return  <div onClick={() => navigate(`${product.id}`)} key={i} className={`product-item ${fullView !== -1 && fullView !== i ? 'grayed-out' : ''}`}>
           <img height={150} width={250} src={product.img} alt={product.title} />
           <span>{product.area}</span>
           <span>{product.price}</span>
           <span>{product.state}</span>
-         
-        {fullView == i && <FullProduct product={product} key={i} />}
-        </div>
+           </div>
+        // : <FullProduct product={product} key={i} onClose={() => setFullView(-1)}/>
+      
       }
       )}
+       </div>
     </div>
+    <Outlet/>
   </>
 }
 export default Products;

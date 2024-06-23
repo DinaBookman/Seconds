@@ -9,6 +9,7 @@ import Products from './components/Products.jsx'
 import FailToLoadPage from './components/FailToLoadPage.jsx'
 import ProductUploadForm from './components/ProductUploadForm.jsx';
 import Register from './components/register/Register.jsx';
+import FullProduct from './components/FullProduct.jsx';
 export const UserContext = createContext();
 
 function App() {
@@ -20,9 +21,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to={'/home'} />} />
         <Route path="home" element={<Home />}>
-          {/* <Route path="connect" element={<Login />} /> */}
           <Route path="all" element={<Products />} />
-          <Route path=':category' element={<Products />} />
+          <Route path=':category' element={<Products />} >
+            <Route path=':productId' element={<FullProduct />}/>
+          </Route>
           <Route path="post" element={<ProductUploadForm />} />
         </Route>
         <Route path="*" element={<FailToLoadPage />} />
@@ -31,7 +33,7 @@ function App() {
           <Route path="register" element={<Register />} />
         </Route>
 
-        
+
       </Routes>
     </BrowserRouter>
 

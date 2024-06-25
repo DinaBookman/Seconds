@@ -21,6 +21,8 @@ const productsController = new ProductsController()
 
 productsRouter.get("/", productsController.getProducts)
 
+productsRouter.get("/:id", productsController.getProduct)
+
 productsRouter.post('/', upload, productsController.addProduct);
 
 productsRouter.delete("/:id", productsController.deleteProduct)

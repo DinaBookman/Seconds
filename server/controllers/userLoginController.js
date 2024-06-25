@@ -45,4 +45,18 @@ export class UserLoginController {
             next(err)
         }
     }
+
+    async editUserLogin(req, res, next) {
+        try {
+            const userLoginService = new UserLoginService();
+            await userLoginService.updateLogin(req.body, req.params.id);
+            res.status(200).json({ status: 200 })
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
 }

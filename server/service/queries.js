@@ -43,8 +43,8 @@ function getQuery(table, params, orderBy, limit, offset) {
     return { sql, queryParams };
 }
 
-const getByIdQuery = (table) => {
-    const query = `SELECT * FROM ${escapeId(table)} where id = ?`;
+const getByIdQuery = (table1,table2) => {
+    const query = `SELECT p.title,p.description,p.category,p.state,p.area,p.price,p.img,u.name,u.email,u.phone FROM ${escapeId(table1)} p join ${escapeId(table2)} u where p.id = ? and p.ownerId=u.id`;
     return query
 }
 

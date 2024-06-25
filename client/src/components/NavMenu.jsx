@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState,useContext } from 'react'
 import  styles from '../components/Home.module.css';
 import { BrowserRouter, Routes, Route, Navigate, Outlet, NavLink } from "react-router-dom"
+import InitialsAvatar from './InitialsAvatar';
+import { UserContext } from '../App'
 function Navbar() {
   // adding the states 
+  const [currentUser, setCurrentUser] = useContext(UserContext);
   const [isActive, setIsActive] = useState(false);
   //add the active class
   const toggleActiveClass = () => {
@@ -20,10 +23,13 @@ function Navbar() {
             
           <p className={`${styles.logo}`}>Seconds</p>
           <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
-            <li onClick={removeActive}>
+            {!currentUser ? <li onClick={removeActive}>
             <NavLink to="/auth/login">Connect</NavLink><br />
             
-            </li>
+            </li>:<li onClick={removeActive}>
+            <NavLink to="profile">Profile</NavLink><br />
+            
+            </li>}
             <li onClick={removeActive}>
             <NavLink to="sofas">Sofas</NavLink><br />
             </li>
@@ -45,6 +51,9 @@ function Navbar() {
             <li onClick={removeActive}>
             <NavLink to="post">Post Add</NavLink><br />
             </li>
+            {/* <li>
+            <InitialsAvatar name="rs1234" userId={6}/>
+            </li> */}
           </ul>
           <div className={`${styles.hamburger} ${isActive ? styles.active : ''}`}  onClick={toggleActiveClass}>
             <span className={`${styles.bar}`}></span>

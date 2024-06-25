@@ -7,6 +7,7 @@ const userLoginController = new UserLoginController()
 
 
 userLoginRouter.post("/",userLoginController.checkUserLogin);
+userLoginRouter.patch("/:id",userLoginController.editUserLogin);
 userLoginRouter.get("/",userLoginController.getUserLogin);
 export {
     userLoginRouter

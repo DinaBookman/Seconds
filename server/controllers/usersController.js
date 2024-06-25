@@ -26,9 +26,8 @@ export class UserController {
             const {name,email ,phone ,rating ,reviews,username,password}=req.body;
             const resultItem = await usersService.addUser({name:name,email:email ,phone:phone ,rating:rating ,reviews:reviews});
             const userId=  resultItem.insertId;
-
             const userLoginService = new UserLoginService();
-            await userLoginService.addUserLogin( { userId:userId, username:username,password:password  });
+            await userLoginService.addUserLogin( {id:userId, username:username,password:password  });
             res.status(200).json(userId);
         }
         catch (ex) {

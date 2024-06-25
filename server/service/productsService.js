@@ -1,7 +1,7 @@
 // import multer from 'multer';
 // import path from 'path';
 import { executeQuery } from './db.js';
-import { getQuery, addQuery, deleteQuery, updateQuery } from './queries.js';
+import { getQuery, getByIdQuery, addQuery, deleteQuery, updateQuery } from './queries.js';
 
 export class ProductsService {
 
@@ -20,6 +20,12 @@ export class ProductsService {
         return result;
     }
 
+    async getProduct(id) {
+        const query = getByIdQuery("products", "users");
+        const result = await executeQuery(query, [id]);
+        return result;
+    }
+
     async addProduct(productItem, imgSrc) {
         const queryProduct = addQuery("products", [...Object.keys(productItem), 'img', 'adDate']);
         const nowDate = new Date();
@@ -28,18 +34,18 @@ export class ProductsService {
         return result;
     }
 
-  
+
 
     async deleteProduct(id) {
 
-            const queryPost = deleteQuery("products", "id");
-            const result = await executeQuery(queryPost, [id])
+        const queryPost = deleteQuery("products", "id");
+        const result = await executeQuery(queryPost, [id])
         return result;
-        }
+    }
     async updateProduct(productItem, productId) {
-            const query = updateQuery('products', productItem);
-            const result = await executeQuery(query, [...Object.values(productItem), productId]);
-            return result;
-        }
+        const query = updateQuery('products', productItem);
+        const result = await executeQuery(query, [...Object.values(productItem), productId]);
+        return result;
+    }
 }
 

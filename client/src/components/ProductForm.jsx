@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import PlaceAutocomplete from './PlaceAutoComplete';
 
-const ProductForm = ({ product, setEdit,setData }) => {
+const ProductForm = ({ product, setEdit, setData }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [address, setAddress] = useState(product?.area || '');
 
@@ -18,8 +18,13 @@ const ProductForm = ({ product, setEdit,setData }) => {
         if (data.image && data.image[0]) {
             formData.append('image', data.image[0]);
         }
-
-        setEdit(formData);
+        console.log(setEdit != undefined);
+        if (setData != undefined) {
+            setData(formData)
+        }
+        if (setEdit != undefined) {
+            setEdit(formData);
+        }
     };
 
     return (

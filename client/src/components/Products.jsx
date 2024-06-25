@@ -5,6 +5,7 @@ import "primeicons/primeicons.css";
 import FullProduct from "./FullProduct";
 import Searches from "./Searches";
 import "./Products.css"; // Import your CSS file for custom styles
+import Product from "./Product";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -52,14 +53,11 @@ function Products() {
             key={i}
             className={`product-item ${fullView !== -1 && fullView !== i ? 'grayed-out' : ''}`}
           >
-            <img height={150} width={250} src={product.img} alt={product.title} />
-            <span>{product.area}</span>
-            <span>{product.price}</span>
-            <span>{product.state}</span>
+           <Product product={product}/>
           
           </div>
         ))}
-          {/* <Outlet /> */}
+
       </div>
       <Outlet />
     </div>

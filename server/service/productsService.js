@@ -42,9 +42,13 @@ export class ProductsService {
         const result = await executeQuery(queryPost, [id])
         return result;
     }
-    async updateProduct(productItem, productId) {
-        const query = updateQuery('products', productItem);
-        const result = await executeQuery(query, [...Object.values(productItem), productId]);
+    async updateProduct(productItem,imgSrc, productId) {
+        console.log("kkkkkkkkkk",productItem,Object.keys(productItem))
+        const nowDate = new Date();
+        const date = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
+        const updatedProduct={...productItem, 'img':imgSrc, 'adDate':date}
+        const queryProduct = updateQuery("products", updatedProduct);
+        const result = await executeQuery(queryProduct, [...Object.values(updatedProduct),productId]);
         return result;
     }
 }

@@ -27,7 +27,7 @@ productsRouter.post('/', upload, productsController.addProduct);
 
 productsRouter.delete("/:id", productsController.deleteProduct)
 
-productsRouter.patch("/:id", productsController.updateProduct)
+productsRouter.patch("/:id",upload, productsController.updateProduct)
 
 export {
     productsRouter

@@ -30,7 +30,7 @@ export class ProductsController {
         }
     }
 
-    async getProduct(req,res,next){
+    async getProduct(req, res, next) {
         try {
             const todosService = new ProductsService();
             const resultItem = await todosService.getProduct(req.params.id);
@@ -76,16 +76,19 @@ export class ProductsController {
         }
     }
     async updateProduct(req, res, next) {
+        console.log(req)
+        const productsService = new ProductsService();
+        const imgSrc = req.file ? 'http://localhost:8080/uploads/' + req.file.filename : null;
+
+        const productItem = req.body;
+console.log(req.body)
         try {
-            const productsService = new ProductsService();
-            await productsService.updateProduct(req.body, req.params.id);
-            res.status(200).json({ status: 200 })
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
+            const result = await productsService.updateProduct(productItem, imgSrc, req.params.id);
+            res.json({ message: 'Product added successfully', result });
+        } catch (error) {
+            console.error('Error adding product:', error);
+            res.status(500).json({ error: 'Error adding product' });
         }
     }
+
 }

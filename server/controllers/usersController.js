@@ -53,19 +53,19 @@ export class UserController {
     //     }
     // }
 
-    // async updateUser(req, res, next) {
-    //     try {
-    //         const usersService = new DataService();
-    //         await usersService.update(TABLE, req.body, req.params.id);
-    //         res.status(200).json({ status: 200 })
-    //     }
-    //     catch (ex) {
-    //         const err = {}
-    //         err.statusCode = 500;
-    //         err.message = ex;
-    //         next(err)
-    //     }
-    // }
+    async updateUser(req, res, next) {
+        try {
+            const usersService = new UsersService();
+            await usersService.updateUser(req.body, req.params.id);
+            res.status(200).json({ status: 200 })
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
 
 
 }

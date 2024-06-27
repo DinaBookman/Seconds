@@ -13,4 +13,11 @@ export class UsersService {
         const result = await executeQuery(query,[...Object.values(newUser)]);
         return result;
     }
+
+    async updateUser(userItem, userId) {
+        const query  = updateQuery('users',userItem);
+        const result = await executeQuery(query , [...Object.values(userItem), userId]);
+        return result;
+    }
+
 }

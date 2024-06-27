@@ -11,8 +11,7 @@ const MyProducts = () => {
     const [myProducts, setMyProducts] = useState([]);
     const [isUpdate, setIsUpdate] = useState(-1);
 
-    useEffect(() => {
-        console.log(currentUser);
+    const getMyProducts=()=>{
         fetch(`http://localhost:8080/products?ownerId=${currentUser.id}`)
             .then((response) => response.json())
             .then((data) => {
@@ -22,6 +21,10 @@ const MyProducts = () => {
             .catch((err) => {
                 console.error(err);
             });
+    }
+    useEffect(() => {
+        console.log(currentUser);
+        getMyProducts();
     }, [])
 
     return <>
@@ -32,7 +35,7 @@ const MyProducts = () => {
                {isUpdate!= index?<div> <Product product={product} />
                 <button className='btnUpdate' onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
                 <button className="btnRemove" disabled={isUpdate === index} onClick={() => remove(todo.id)}><MdDelete /></button></div>:
-                <UpdateProduct product={product}/>}
+                <UpdateProduct product={product} setIsUpdate={setIsUpdate} getMyProducts={getMyProducts}/>}
             </div>
         })}</div>
     </>

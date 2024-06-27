@@ -43,9 +43,14 @@ function getQuery(table, params, orderBy, limit, offset) {
     return { sql, queryParams };
 }
 
-const getByIdQuery = (table1,table2) => {
+const getProductByIdQuery = (table1,table2) => {
     const query = `SELECT p.title,p.description,p.category,p.state,p.area,p.price,p.img,u.name,u.email,u.phone FROM ${escapeId(table1)} p join ${escapeId(table2)} u where p.id = ? and p.ownerId=u.id`;
     return query
+}
+
+const getByIdQuery=(table)=>{
+    const query = `select * from ${escapeId(table)} where id = ?`;
+    return query;
 }
 
 const addQuery = (table, columns) => {
@@ -62,4 +67,4 @@ const updateQuery = (table,columns) => {
     const query = `UPDATE ${escapeId(table)} SET ${columnsNames.map((column)=>(escapeId(column)+'=?'))} WHERE (id = ?)`;
     return query
 }
-export { getQuery,getByIdQuery, addQuery,deleteQuery,updateQuery }
+export { getQuery,getByIdQuery, addQuery,deleteQuery,updateQuery ,getProductByIdQuery}

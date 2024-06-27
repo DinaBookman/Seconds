@@ -1,28 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import PlaceAutocomplete from './PlaceAutoComplete';
 
 const ProductForm = ({ product, setEdit, setData }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, watch } = useForm({
+        defaultValues: product || {},
+    });
     const [address, setAddress] = useState(product?.area || '');
 
     const onSubmit = async (data) => {
         const formData = new FormData();
-        formData.append('ownerId', 1);  // Make sure this is the correct owner ID
-        formData.append('title', data.title);
-        formData.append('description', data.description);
-        formData.append('category', data.category);
-        formData.append('state', data.state);
-        formData.append('area', address); // Use selected address
-        formData.append('price', data.price);
+
+            formData.append('ownerId', 1);
+
+        if (data.title !== product?.title) {
+            formData.append('title', data.title);
+        }
+        if (data.description !== product?.description) {
+            formData.append('description', data.description);
+        }
+        if (data.category !== product?.category) {
+            formData.append('category', data.category);
+        }
+        if (data.state !== product?.state) {
+            formData.append('state', data.state);
+        }
+        if (address !== product?.area) {
+            formData.append('area', address);
+        }
+        if (data.price !== product?.price) {
+            formData.append('price', data.price);
+        }
         if (data.image && data.image[0]) {
             formData.append('image', data.image[0]);
         }
-        console.log(setEdit != undefined);
-        if (setData != undefined) {
-            setData(formData)
+
+        if (setData) {
+            setData(formData);
         }
-        if (setEdit != undefined) {
+        if (setEdit) {
             setEdit(formData);
         }
     };
@@ -32,7 +48,6 @@ const ProductForm = ({ product, setEdit, setData }) => {
             <div>
                 <label htmlFor="title">Title</label>
                 <input
-                    defaultValue={product?.title || ''}
                     id="title"
                     {...register('title', { required: 'Title is required' })}
                 />
@@ -43,7 +58,6 @@ const ProductForm = ({ product, setEdit, setData }) => {
                 <label htmlFor="description">Description</label>
                 <textarea
                     id="description"
-                    defaultValue={product?.description || ''}
                     {...register('description', { required: 'Description is required' })}
                 />
                 {errors.description && <p>{errors.description.message}</p>}
@@ -54,7 +68,6 @@ const ProductForm = ({ product, setEdit, setData }) => {
                 <input
                     type="number"
                     id="price"
-                    defaultValue={product?.price || ''}
                     {...register('price', { required: 'Price is required', valueAsNumber: true })}
                 />
                 {errors.price && <p>{errors.price.message}</p>}
@@ -64,7 +77,6 @@ const ProductForm = ({ product, setEdit, setData }) => {
                 <label htmlFor="category">Category</label>
                 <select id="category"
                     {...register('category', { required: 'Category is required' })}
-                    defaultValue={product ? product.category : ''}
                 >
                     <option value="">Select...</option>
                     <option value="sofas">Sofa</option>
@@ -79,7 +91,6 @@ const ProductForm = ({ product, setEdit, setData }) => {
             <div>
                 <label htmlFor="state">State</label>
                 <select id="state" {...register('state', { required: 'State is required' })}
-                    defaultValue={product?.state || ''}
                 >
                     <option value="">Select...</option>
                     <option value="new">New</option>
@@ -96,6 +107,12 @@ const ProductForm = ({ product, setEdit, setData }) => {
 
             <div>
                 <label htmlFor="image">Image Upload</label>
+                {product?.image && (
+                    <div>
+                        <img src={product.image} alt="Current" width="100" />
+                        <p>Current Image</p>
+                    </div>
+                )}
                 <input
                     type="file"
                     id="image"

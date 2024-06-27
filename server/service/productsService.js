@@ -1,7 +1,7 @@
 // import multer from 'multer';
 // import path from 'path';
 import { executeQuery } from './db.js';
-import { getQuery, getByIdQuery, addQuery, deleteQuery, updateQuery } from './queries.js';
+import { getQuery, getByIdQuery, addQuery, deleteQuery, updateQuery,getProductByIdQuery } from './queries.js';
 
 export class ProductsService {
 
@@ -21,7 +21,7 @@ export class ProductsService {
     }
 
     async getProduct(id) {
-        const query = getByIdQuery("products", "users");
+        const query = getProductByIdQuery("products", "users");
         const result = await executeQuery(query, [id]);
         return result;
     }

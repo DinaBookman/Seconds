@@ -8,7 +8,7 @@ usersRouter.get("/:id", userscontroller.getUserById)
 // usersRouter.get("/", userscontroller.getUsers)
 usersRouter.post("/", userscontroller.addUser)
 // usersRouter.delete("/:id", userscontroller.deleteUser)
-// usersRouter.put("/:id", userscontroller.updateUser)
+usersRouter.patch("/:id", userscontroller.updateUser)
 
 export {
     usersRouter

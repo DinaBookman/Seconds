@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProductForm from "./ProductForm";
 
-const UpdateProduct = ({ product }) => {
+const UpdateProduct = ({ product,setIsUpdate,getMyProducts }) => {
     const [edit, setEdit] = useState(null);
 
     useEffect(() => {
@@ -22,6 +22,8 @@ const UpdateProduct = ({ product }) => {
 
                     const result = await response.json();
                     alert(result.message);
+                    setIsUpdate(-1);
+                    getMyProducts();
                 } catch (error) {
                     console.error('Error updating product:', error);
                     alert('Error updating product');

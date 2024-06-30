@@ -10,10 +10,10 @@ import FailToLoadPage from './components/FailToLoadPage.jsx'
 import ProductUploadForm from './components/ProductUploadForm.jsx';
 import Register from './components/register/Register.jsx';
 import FullProduct from './components/FullProduct';
-import Profile from './components/Profile.jsx';
-import Logout from './components/Logout.jsx';
-import MyProducts from './components/MyProducts.jsx';
-import MyProfile from './components/MyProfile.jsx';
+import Profile from './components/profile/Profile.jsx';
+import Logout from './components/profile/Logout.jsx';
+import MyProducts from './components/profile/MyProducts.jsx';
+import MyProfile from './components/profile/MyProfile.jsx';
 export const UserContext = createContext();
 
 function App() {
@@ -49,6 +49,7 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
             </Route>
+            {/* //? */}
             <Route path='/logout' element={<Logout />} />
 
           </Routes>

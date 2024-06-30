@@ -6,7 +6,7 @@ import { getQuery, getByIdQuery, addQuery, deleteQuery, updateQuery,getProductBy
 export class ProductsService {
 
     async getProducts(url) {
-        const { category, priceMin, priceMax, area, state, sortBy, direction, limit, page } = url;
+        const { category, priceMin, priceMax, area, state, sortBy, direction, limit, offset } = url;
         const params = [
             { field: 'category', comparison: undefined, value: category },
             { field: 'price', comparison: '>=', value: priceMin },
@@ -15,7 +15,7 @@ export class ProductsService {
             { field: 'state', comparison: undefined, value: state }
         ]
         const orderBy = { 'column': sortBy, 'direction': direction };
-        let queryProducts = getQuery("seconds.products", params, orderBy, limit, page);
+        let queryProducts = getQuery("seconds.products", params, orderBy, limit, offset);
         const result = await executeQuery(queryProducts.sql, queryProducts.queryParams);
         return result;
     }

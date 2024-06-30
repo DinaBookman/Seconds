@@ -2,7 +2,7 @@
 import { escapeId } from './db.js';
 
 function getQuery(table, params, orderBy, limit, offset) {
-    let sql = `SELECT * FROM ${escapeId(table)} WHERE 1=1`;
+    let sql = `SELECT * FROM ${escapeId(table)} WHERE ifnull(deactivated,0) = 0`;
     const queryParams = [];
 
     params.map(param => {
@@ -44,12 +44,12 @@ function getQuery(table, params, orderBy, limit, offset) {
 }
 
 const getProductByIdQuery = (table1,table2) => {
-    const query = `SELECT p.title,p.description,p.category,p.state,p.area,p.price,p.img,u.name,u.email,u.phone FROM ${escapeId(table1)} p join ${escapeId(table2)} u where p.id = ? and p.ownerId=u.id`;
+    const query = `SELECT p.title,p.description,p.category,p.state,p.area,p.price,p.img,u.name,u.email,u.phone FROM ${escapeId(table1)} p join ${escapeId(table2)} u where ifnull(p.deactivated,0) = 0 and ifnull(u.deactivated,0) = 0 and p.id = ? and p.ownerId=u.id`;
     return query
 }
 
 const getByIdQuery=(table)=>{
-    const query = `select * from ${escapeId(table)} where id = ?`;
+    const query = `select * from ${escapeId(table)} where ifnull(deactivated,0) = 0 and id = ?`;
     return query;
 }
 

@@ -4,7 +4,7 @@ import { LoadScript, StandaloneSearchBox } from '@react-google-maps/api';
 const libraries = ['places'];
 const googleMapsApiKey = 'AIzaSyC-zv83AST4XvhbahDnbXnCb--dYpaIxV0'; // Replace with your API key
 
-const PlaceAutocomplete = ({address,setAddress}) => {
+const PlaceAutocomplete = ({address,setAddress,setFilters}) => {
   // const [address, setAddress] = useState('');
   const searchBoxRef = useRef(null);
 
@@ -15,6 +15,7 @@ const PlaceAutocomplete = ({address,setAddress}) => {
     const place = places[0];
     setAddress(place.vicinity);
     setAddress(place.vicinity);
+    setFilters((prevFilters)=>({...prevFilters,area:place.vicinity}))
     console.log(place); // Handle the place details as needed
   };
 

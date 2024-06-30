@@ -1,0 +1,114 @@
+import React, { useEffect, useContext, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { UserContext } from '../../App'
+import PhoneInput from 'react-phone-input-2';
+
+const MyProfile = () => {
+    const [currentUser, setCurrentUser] = useContext(UserContext);
+    const [user,setUser]=useState({});
+    
+    useEffect(() => {
+        fetch(`http://localhost:8080/users/${currentUser.id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUser(data[0]);
+          console.log(user);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }, [])
+
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors }
+    } = useForm();
+
+    const onSubmit = (data) => {
+        let updatedUser = {};
+        if (data.name !== user?.name) {
+            updatedUser = { ...updatedUser, name: data.name }
+        }
+        if (data.email !== user?.email) {
+            updatedUser = { ...updatedUser, email: data.email }
+        }
+        if (data.phone !== user?.phone) {
+            updatedUser = { ...updatedUser, phone: data.phone }
+        }
+console.log(updatedUser,"  updated user")
+        fetch(`http://localhost:8080/users/${currentUser.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(updatedUser),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        }).then(async response => {
+            // const userId = await response.json();
+            (!response.ok) ? alert("oops somthing went wrong... please try again!") : alert("user updated successfully!")
+        })
+    };
+
+
+    return <>
+        <h1>My Profile</h1>
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+            {console.log(user.name,"  name")}
+            <input type="text" name="name" 
+                {...register("name", {
+                    required: "Name is required.",
+                    pattern: {
+                        value: /^[a-zA-Z. ]+$/,
+                        message: "Name is not valid."
+                    }
+                })} />
+            {errors.name && <p>{errors.name.message}</p>}
+
+            <input type="email" name="email" 
+                {...register("email", {
+                    required: "Email is required.",
+                    pattern: {
+                        value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                        message: "Email is not valid."
+                    }
+                })} />
+            {errors.email && <p>{errors.email.message}</p>}
+
+
+
+
+            <div>
+                <label htmlFor="phone">Phone Number</label>
+                <Controller
+                    name="phone"
+                    control={control}
+                    rules={{
+                        required: 'Phone number is required',
+                        validate: (value) => {
+                            const phoneNumber = value.replace(/\D/g, '');
+                            return phoneNumber.length >= 10 && phoneNumber.length <= 14 || 'Invalid phone number format';
+                        }
+                    }}
+                    
+                    render={({ field }) => (
+                        <PhoneInput
+                            country={'us'}
+                            value={field.value}
+                            onChange={field.onChange}
+                            inputProps={{
+                                name: 'phone',
+                                required: true,
+                                autoFocus: true
+                            }}
+                        />
+                    )}
+                />
+                {errors.phone && <p>{errors.phone.message}</p>}
+            </div>
+
+            <input type="submit" value="add detailes" />
+        </form>
+    </>
+}
+export default MyProfile;

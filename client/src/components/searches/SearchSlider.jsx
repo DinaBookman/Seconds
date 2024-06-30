@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'antd/dist/reset.css';
 import { Slider } from 'antd';
 
-const SearchSlider = ({setSearchQuery}) => {
+const SearchSlider = ({setFilters}) => {
   const [range, setRange] = useState([1, 10000]);
 
   const onChange = (value) => {
@@ -12,8 +12,8 @@ const SearchSlider = ({setSearchQuery}) => {
     <div style={{ padding: '50px' }}>
       <h2>Range Slider Example</h2>
       <div
-        onMouseUp={()=> {setSearchQuery(`priceMin=${range[0]}&priceMax=${range[1]}`)}}
-        onTouchMove={()=> {setSearchQuery(`priceMin=${range[0]}&priceMax=${range[1]}`)}}
+        onMouseUp={()=> {setFilters((prevFilters)=>({...prevFilters,priceMin:range[0],priceMax:range[1]}))}}
+        onTouchEnd={()=> {setFilters((prevFilters)=>({...prevFilters,priceMin:range[0],priceMax:range[1]}))}}
       >
       <Slider
         range

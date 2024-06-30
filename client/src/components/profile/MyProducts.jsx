@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from '../App'
+import { UserContext } from '../../App'
 import { MdModeEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-import Product from "./Product";
-import UpdateProduct from "./UpdateProduct";
+import Product from "../Product";
+import UpdateProduct from "../UpdateProduct";
 
 const MyProducts = () => {
 

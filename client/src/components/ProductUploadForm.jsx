@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import PlaceAutocomplete from './PlaceAutoComplete';
+import PlaceAutocomplete from './searches/PlaceAutoComplete';
 import ProductForm from './ProductForm';
 
 const ProductUploadForm = () => {

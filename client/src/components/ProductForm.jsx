@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import PlaceAutocomplete from './PlaceAutoComplete';
+import PlaceAutocomplete from './searches/PlaceAutoComplete';
 
 const ProductForm = ({ product, setEdit, setData }) => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm({

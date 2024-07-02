@@ -17,6 +17,8 @@ import { productsRouter } from './router/productsRouter.js';
 // import { commentsRouter } from './router/commentsRouter.js';
 import { usersRouter } from './router/usersRouter.js';
 import { userLoginRouter } from './router/userLoginRouter.js';
+import { categoriesRouter } from './router/categoriesRouter.js';
+import { statusesRouter } from './router/statusesRouter.js';
 // import {Errors} from './middleware/errors.js'
 const server = express();
 server.use('/uploads', express.static('uploads'));
@@ -41,8 +43,8 @@ server.use(cookieParser());
 server.use('/products',productsRouter);
 server.use('/users',usersRouter);
 server.use('/userLogin',userLoginRouter)
-// server.use('/posts',postsRouter);
-// server.use('/comments',commentsRouter);
+server.use('/categories',categoriesRouter);
+server.use('/statuses',statusesRouter);
 
 // server.use(Errors);
 

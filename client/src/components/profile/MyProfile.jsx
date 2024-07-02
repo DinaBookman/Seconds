@@ -2,21 +2,26 @@ import React, { useEffect, useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { UserContext } from '../../App'
 import PhoneInput from 'react-phone-input-2';
+import { fetchUser,updateUser } from "../../api";
+
 
 const MyProfile = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext);
-    const [user,setUser]=useState({});
-    
+    const [user, setUser] = useState({});
+
+    const getUser = async () => {
+        try {
+            const result = await fetchUser(currentUser.id);
+            setUser(result[0]);
+            console.log(result[0])
+        }
+        catch (err) {
+            console.error(err);
+        };
+    }
+
     useEffect(() => {
-        fetch(`http://localhost:8080/users/${currentUser.id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setUser(data[0]);
-          console.log(user);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        getUser();
     }, [])
 
     const {
@@ -26,6 +31,14 @@ const MyProfile = () => {
         formState: { errors }
     } = useForm();
 
+    const updateDetails=async(updatedUser)=>{
+        try {
+            await updateUser(currentUser.id, updatedUser);
+            alert("User updated successfully!");
+        } catch (error) {
+            alert("Oops, something went wrong... please try again!");
+        }
+    }
     const onSubmit = (data) => {
         let updatedUser = {};
         if (data.name !== user?.name) {
@@ -37,25 +50,16 @@ const MyProfile = () => {
         if (data.phone !== user?.phone) {
             updatedUser = { ...updatedUser, phone: data.phone }
         }
-console.log(updatedUser,"  updated user")
-        fetch(`http://localhost:8080/users/${currentUser.id}`, {
-            method: 'PATCH',
-            body: JSON.stringify(updatedUser),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        }).then(async response => {
-            // const userId = await response.json();
-            (!response.ok) ? alert("oops somthing went wrong... please try again!") : alert("user updated successfully!")
-        })
+        console.log(updatedUser, "  updated user")
+        updateDetails(updatedUser);
     };
 
 
     return <>
         <h1>My Profile</h1>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
-            {console.log(user.name,"  name")}
-            <input type="text" name="name" 
+            {console.log(user.name, "  name")}
+            <input type="text" name="name"
                 {...register("name", {
                     required: "Name is required.",
                     pattern: {
@@ -65,7 +69,7 @@ console.log(updatedUser,"  updated user")
                 })} />
             {errors.name && <p>{errors.name.message}</p>}
 
-            <input type="email" name="email" 
+            <input type="email" name="email"
                 {...register("email", {
                     required: "Email is required.",
                     pattern: {
@@ -90,7 +94,7 @@ console.log(updatedUser,"  updated user")
                             return phoneNumber.length >= 10 && phoneNumber.length <= 14 || 'Invalid phone number format';
                         }
                     }}
-                    
+
                     render={({ field }) => (
                         <PhoneInput
                             country={'us'}

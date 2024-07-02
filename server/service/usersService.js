@@ -1,5 +1,5 @@
 import { executeQuery } from './db.js';
-import { getQuery, getByIdQuery,addQuery, deleteQuery, updateQuery } from './queries.js';
+import {  getByIdQuery,addQuery, deleteQuery, updateQuery } from './queries.js';
 
 export class UsersService {
     async getUserById(id) {

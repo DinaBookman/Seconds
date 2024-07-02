@@ -4,6 +4,7 @@ import { MdModeEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import Product from "../Product";
 import UpdateProduct from "../UpdateProduct";
+import { fetchProducts } from "../../api";
 
 const MyProducts = () => {
 
@@ -11,16 +12,15 @@ const MyProducts = () => {
     const [myProducts, setMyProducts] = useState([]);
     const [isUpdate, setIsUpdate] = useState(-1);
 
-    const getMyProducts=()=>{
-        fetch(`http://localhost:8080/products?ownerId=${currentUser.id}`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setMyProducts(data);
-            })
-            .catch((err) => {
+    const getMyProducts=async()=>{
+        try {
+            const result = await fetchProducts(`ownerId=${currentUser.id}`);
+                console.log(result);
+                setMyProducts(result);
+            }
+            catch(err) {
                 console.error(err);
-            });
+            };
     }
     useEffect(() => {
         console.log(currentUser);

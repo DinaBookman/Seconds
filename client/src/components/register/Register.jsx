@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import UserDetailes from './UserDetailes';
 import { useForm } from "react-hook-form";
+import { fetchUserLogin } from '../../api';
 
 const Register = () => {
 
@@ -14,10 +15,17 @@ const Register = () => {
         formState: { errors }
     } = useForm();
 
-    const isExist = (name) => {
-        fetch(`http://localhost:8080/userLogin?username=${name}`)
-            .then(response => response.json())
-            .then(response => (response.length) ? setExist("exist") :setExist("notExist"))
+    const isExist =async (name) => {
+        try {
+            const reasult = await fetchUserLogin(name);
+            if (reasult.length)
+                setExist("exist")
+            else
+                setExist("notExist")
+        }
+        catch (error) {
+            alert(error)
+        }
     }
 
     const signUp = (data) => {
@@ -27,12 +35,12 @@ const Register = () => {
         }
         setInput({ name: data.username, password: data.password })
         isExist(data.username);
-      
+
     }
 
     return (
         <>
-        <h1>sign up</h1>
+            <h1>sign up</h1>
             {exist === "notValid" && <div>not valid input</div>}
             {exist === "exist" && <div>you are an existing user please log in!</div>}
             {exist === "notExist" ? <UserDetailes username={input.name} password={input.password} /> :
@@ -42,25 +50,25 @@ const Register = () => {
                             {...register("username", {
                                 required: "username is required.",
                             })} />
-                            {errors.username ? <p>{errors.username.message}</p>:<br/>}
+                        {errors.username ? <p>{errors.username.message}</p> : <br />}
 
                         <input type="password" name="password" placeholder='password'
                             {...register("password", {
                                 required: "password is required.",
                             })} />
-                        {errors.password ? <p>{errors.password.message}</p>:<br/>}
+                        {errors.password ? <p>{errors.password.message}</p> : <br />}
 
                         <input type="password" name="passwordVerification" placeholder='password verification'
                             {...register("passwordVerification", {
                                 required: "password verification is required.",
                             })} />
-                        {errors.passwordVerification ? <p>{errors.passwordVerification.message}</p>:<br/>}
+                        {errors.passwordVerification ? <p>{errors.passwordVerification.message}</p> : <br />}
 
                         <input type="submit" value="Sign Up" />
                     </form>
                 </div>
             }
-            {exist != "notExist"&&<div>Are you an existing user? <Link style={{textDecoration:'underline'}}to={'/auth/login'}>please login</Link></div>}
+            {exist != "notExist" && <div>Are you an existing user? <Link style={{ textDecoration: 'underline' }} to={'/auth/login'}>please login</Link></div>}
         </>
     );
 }

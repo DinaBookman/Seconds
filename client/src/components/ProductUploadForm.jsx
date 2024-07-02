@@ -1,40 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import PlaceAutocomplete from './searches/PlaceAutoComplete';
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../App';
 import ProductForm from './ProductForm';
+import { addProduct } from '../api';
 
 const ProductUploadForm = () => {
   const [data, setData] = useState(null);
+  const [currentUser, setCurrentUser] = useContext(UserContext);
+  const navigate = useNavigate();
+
+  // Check if the user is logged in
+  useEffect(() => {
+    if (!currentUser) {
+      // Redirect to login and set the state to navigate back after login
+      navigate('/auth/login', { state: { from: '/home/post' } });
+    }
+  }, [currentUser, navigate]);
+
+  const postProduct = async () => {
+    console.log("kkk", data)
+    if (data) {
+      try {
+        const result = await addProduct(data);
+        alert(result);
+      } catch (error) {
+        console.error('Error uploading product:', error);
+        alert('Error uploading product');
+      }
+    }
+  };
 
   useEffect(() => {
-    const postProduct = async () => {
-      console.log("kkk",data )
-      if (data) {
-        try {
-          console.log(data, "flooooooooooooooooooojjk");
-
-          const response = await fetch('http://localhost:8080/products', {
-            method: 'POST',
-            body: data,
-            headers: {
-              // 'Content-Type': 'multipart/form-data', // Don't set this manually when using FormData
-              'Accept': 'application/json',
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const result = await response.json();
-          alert(result.message);
-        } catch (error) {
-          console.error('Error uploading product:', error);
-          alert('Error uploading product');
-        }
-      }
-    };
-
     postProduct();
   }, [data]);
 

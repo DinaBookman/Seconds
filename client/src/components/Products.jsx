@@ -5,19 +5,20 @@ import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
 import FullProduct from "./FullProduct";
 import Searches from "./searches/Searches";
-import "./Products.css"; // Import your CSS file for custom styles
+import "./Products.css";
 import Product from "./Product";
-import { FaArrowUp } from "react-icons/fa"; // Import FontAwesome icon for the scroll-to-top button
+import { FaArrowUp } from "react-icons/fa";
+import { fetchProducts } from "../api";
 
 function Products() {
   const [products, setProducts] = useState([]);
-  const [fullView, setFullView] = useState(-1); // State to track which product is in full view
+  const [fullView, setFullView] = useState(-1);
   const [searchQuery, setSearchQuery] = useState("");
   const [address, setAddress] = useState('');
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [showScrollButton, setShowScrollButton] = useState(false); // State to manage scroll button visibility
-  const [filters,setFilters]=useState({})
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const [filters, setFilters] = useState({})
   const { category } = useParams();
   const navigate = useNavigate();
   const limit = 20;
@@ -28,14 +29,14 @@ function Products() {
     setSearchQuery(queryString);
   }, [filters]);
 
-  // Update search query based on category
+
   useEffect(() => {
     if (category) {
-      setFilters((prevFilters)=>({...prevFilters,category:category}))
+      setFilters((prevFilters) => ({ ...prevFilters, category: category }))
     }
   }, [category]);
 
-  // Fetch data when searchQuery changes
+
   useEffect(() => {
     if (searchQuery) {
       resetData();
@@ -43,7 +44,7 @@ function Products() {
     }
   }, [searchQuery]);
 
-  // Function to reset data
+
   const resetData = () => {
     setProducts([]);
     setOffset(0);
@@ -51,12 +52,11 @@ function Products() {
     fetchData(0, true);
   };
 
-  // Function to fetch data
+
   const fetchData = async (currentOffset, isReset = false) => {
     try {
-      const response = await fetch(`http://localhost:8080/products?${searchQuery}&limit=${limit}&offset=${currentOffset}`);
-      const result = await response.json();
-
+      const result = await fetchProducts(`${searchQuery}&limit=${limit}&offset=${currentOffset}`);
+      
       if (isReset) {
         setProducts(result);
       } else {
@@ -73,13 +73,13 @@ function Products() {
     }
   };
 
-  // Handle product click
+
   const handleProductClick = (productId) => {
     console.log("Navigating to product:", productId);
     navigate(`${productId}`);
   };
 
-  // Function to handle scroll
+
   const handleScroll = () => {
     if (window.scrollY > 200) {
       setShowScrollButton(true);
@@ -88,13 +88,13 @@ function Products() {
     }
   };
 
-  // Effect to add scroll listener
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Function to scroll to top
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -124,7 +124,7 @@ function Products() {
         </InfiniteScroll>
       </div>
       <Outlet />
-      {/* Scroll to top button */}
+
       {showScrollButton && (
         <button className="scroll-to-top" onClick={scrollToTop}>
           <FaArrowUp className="scroll-to-top-icon" />

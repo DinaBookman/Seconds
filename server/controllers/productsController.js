@@ -1,17 +1,6 @@
-import express from 'express';
-import multer from 'multer';
-import path from 'path';
+
 import { ProductsService } from "../service/productsService.js";
 
-// const storage = multer.diskStorage({
-//     destination: (req, file, callBack) => {
-//         callBack(null, './uploads');
-//     },
-//     filename: (req, file, callBack) => {
-//         callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-//     }
-// });
-// const upload = multer({ storage: storage }).single('image');
 
 export class ProductsController {
 
@@ -52,7 +41,7 @@ export class ProductsController {
         const imgSrc = 'http://localhost:8080/uploads/' + req.file.filename;
 
         const productItem = req.body;
-
+        console.log(req.body,req.file);
         try {
             const result = await productsService.addProduct(productItem, imgSrc);
             res.json({ message: 'Product added successfully', result });

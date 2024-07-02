@@ -1,20 +1,21 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-// import { UserContext } from '../App'
+import React, { useState, useContext, useRef } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import ReCAPTCHA from 'react-google-recaptcha'
+import ReCAPTCHA from 'react-google-recaptcha';
 import Cookies from 'js-cookie';
-import { UserContext } from '../App'
+import { UserContext } from '../App';
+import { checkUserLogin } from '../api';
 
 
 const Login = () => {
 
-  //const [currentUser, setCurrentUser] = useContext(UserContext);
   const [currentUser, setCurrentUser] = useContext(UserContext);
   const [exist, setExist] = useState(true);
+  const [recaptchaError, setRecaptchaError] = useState(false);
   const navigate = useNavigate();
-  const captchaRef = useRef(null)
+  const location = useLocation();
+  const captchaRef = useRef(null);
+
 
   const {
     register,
@@ -23,39 +24,26 @@ const Login = () => {
   } = useForm();
 
 
-  // useEffect(() => {
-  //   // const currentUser = getUserFromCookie();
-  //   // if (currentUser) {
-  //     navigate(`/home`);
-  //   // }
-  // }, [exist]);
-
   const logIn = async (data) => {
     const token = captchaRef.current.getValue();
+
+    if (!token) {
+      setRecaptchaError(true);
+      return;
+    }
+    setRecaptchaError(false)
     captchaRef.current.reset();
 
     try {
-      const response = await fetch('http://localhost:8080/userLogin', {
-        method: 'POST',
-        body: JSON.stringify({ data, token }),
-        //credentials: 'include', // Send cookies with the request
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      const userId = await response.json();
-
+      const userId = await checkUserLogin(data,token);
+      console.log(userId)
       if (userId) {
         const user = { id: userId, username: data.username };
         Cookies.set('user', JSON.stringify(user), { expires: 1 }); // Save user in cookie
         setExist(true);
         setCurrentUser(user);
-        navigate(`/home`);
+        const from = location.state?.from || '/home';
+        navigate(from);
       } else {
         setExist(false);
       }
@@ -72,6 +60,7 @@ const Login = () => {
     <div><Link style={{ textDecoration: 'underline' }} to={'/home'}>exit connect</Link></div>
       <h1>login</h1>
       {!exist && <div>Incorrect username or password</div>}
+      {recaptchaError && <div>Please verify that you are not a robot.</div>} 
       <form noValidate onSubmit={handleSubmit(logIn)}>
         <input type='text' name='username' placeholder='username'
           {...register("username", {

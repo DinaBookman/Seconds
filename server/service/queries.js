@@ -1,13 +1,20 @@
 
 import { escapeId } from './db.js';
 
+const getProductsJoinTable = () => {
+    // const sql = "SELECT products.id,products.ownerId,products.title,products.description,categories.displayName AS category,statuses.description AS status,products.area,products.price,products.img,products.adDate,products.deactivated FROM products INNER JOIN categories ON products.categoryId = categories.id INNER JOIN statuses ON products.statusId = statuses.id";
+    const sql = "(SELECT products.id, products.ownerId, products.title,products.description, categories.displayName AS category,statuses.description AS status,products.area,products.price,products.img,products.adDate,products.deactivated FROM products INNER JOIN categories ON products.categoryId = categories.id INNER JOIN statuses ON products.statusId = statuses.id) AS completeProductes";
+    return sql;
+}
+
 function getQuery(table, params, orderBy, limit, offset) {
-    let sql = `SELECT * FROM ${escapeId(table)} WHERE ifnull(deactivated,0) = 0`;
+    let sql = `SELECT * FROM ${table} WHERE ifnull(deactivated,0) = 0`;
+
     const queryParams = [];
 
     params.map(param => {
-  
-        if (param.value!== undefined) {
+
+        if (param.value !== undefined) {
 
             if (param.comparison) {
                 sql += ` AND ${escapeId(param.field)} ${param.comparison} ?`;
@@ -22,7 +29,7 @@ function getQuery(table, params, orderBy, limit, offset) {
 
 
 
-    if (orderBy&&orderBy.column) {
+    if (orderBy && orderBy.column) {
 
         sql += ` ORDER BY ${escapeId(orderBy.column)} ${orderBy.direction === 'DESC' ? 'DESC' : 'ASC'}`;
     }
@@ -39,20 +46,28 @@ function getQuery(table, params, orderBy, limit, offset) {
         queryParams.push(offset);
     }
 
-
+console.log(sql)
     return { sql, queryParams };
 }
 
-const getProductByIdQuery = (table1,table2) => {
-    const query = `SELECT p.title,p.description,p.category,p.state,p.area,p.price,p.img,u.name,u.email,u.phone FROM ${escapeId(table1)} p join ${escapeId(table2)} u where ifnull(p.deactivated,0) = 0 and ifnull(u.deactivated,0) = 0 and p.id = ? and p.ownerId=u.id`;
+const getProductByIdQuery = (table1, table2) => {
+    const query = `SELECT completeProductes.title,completeProductes.description,completeProductes.category,completeProductes.status,completeProductes.area,completeProductes.price,completeProductes.img,u.name,u.email,u.phone FROM ${table1}   join ${escapeId(table2)} u where ifnull(completeProductes.deactivated,0) = 0 and ifnull(u.deactivated,0) = 0 and completeProductes.id = ? and completeProductes.ownerId=u.id`;
     return query
 }
 
-const getByIdQuery=(table)=>{
+const getByIdQuery = (table) => {
     const query = `select * from ${escapeId(table)} where ifnull(deactivated,0) = 0 and id = ?`;
     return query;
 }
+const getCategoryStatusQuery = (table) => {
+    const query = `select * from ${escapeId(table)}`;
+    return query;
+}
 
+const getByIdCategoryStatusQuery = (table) => {
+    const query = `select * from ${escapeId(table)} where id = ?`;
+    return query;
+}
 const addQuery = (table, columns) => {
     const query = `INSERT INTO ${escapeId(table)} (${columns.map((column) => escapeId(column))}) VALUES (${columns.map(() => '?')})`;
     return query
@@ -62,9 +77,9 @@ const deleteQuery = (table) => {
     return query
 }
 
-const updateQuery = (table,columns) => {
-    const columnsNames=Object.keys(columns);
-    const query = `UPDATE ${escapeId(table)} SET ${columnsNames.map((column)=>(escapeId(column)+'=?'))} WHERE (id = ?)`;
+const updateQuery = (table, columns) => {
+    const columnsNames = Object.keys(columns);
+    const query = `UPDATE ${escapeId(table)} SET ${columnsNames.map((column) => (escapeId(column) + '=?'))} WHERE (id = ?)`;
     return query
 }
-export { getQuery,getByIdQuery, addQuery,deleteQuery,updateQuery ,getProductByIdQuery}
+export { getProductsJoinTable, getQuery, getByIdQuery,getByIdCategoryStatusQuery,getCategoryStatusQuery, addQuery, deleteQuery, updateQuery, getProductByIdQuery }

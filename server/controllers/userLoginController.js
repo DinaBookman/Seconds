@@ -9,8 +9,9 @@ export class UserLoginController {
             const { token, ...userData } = req.body;
             const isRecaptchaValid = await verifyRecaptcha(token);
 
+            // Check reCAPTCHA validation result
             if (!isRecaptchaValid.success) {
-                throw new Error('reCAPTCHA verification failed.');
+                return res.status(400).json({ message: 'reCAPTCHA verification failed.' }); 
             }
         
             const userLoginService = new UserLoginService();

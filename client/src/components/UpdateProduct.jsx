@@ -25,7 +25,7 @@ const UpdateProduct = ({ product,setIsUpdate,getMyProducts }) => {
 
     return (
         <>
-            <ProductForm product={product} setEdit={setEdit} />
+            <ProductForm product={product} setEdit={setEdit} setIsUpdate={setIsUpdate} />
         </>
     );
 };

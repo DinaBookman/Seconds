@@ -47,8 +47,8 @@ export const addProduct = async (data) => {
         alert('Error uploading product');
     }
 }
-  
-export const updateProduct = async (edit,id) => {
+
+export const updateProduct = async (edit, id) => {
     try {
         const response = await fetch(`http://localhost:8080/products/${id}`, {
             method: 'PATCH',
@@ -63,13 +63,31 @@ export const updateProduct = async (edit,id) => {
         }
 
         return await response.json();
-       
+
     } catch (error) {
         console.error('Error updating product:', error);
         alert('Error updating product');
     }
 }
 
+export const removeProduct = async (productId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/products/${productId}`, {
+            method: 'DELETE',
+
+        });
+console.log(response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error updating product:', error);
+        alert('Error updating product');
+    }
+}
 
 export const fetchUser = async (userId) => {
     try {

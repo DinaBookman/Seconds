@@ -22,7 +22,8 @@ const ProductUploadForm = () => {
     if (data) {
       try {
         const result = await addProduct(data);
-        alert(result);
+        alert("uploaded successfuly");
+        navigate('/home')
       } catch (error) {
         console.error('Error uploading product:', error);
         alert('Error uploading product');

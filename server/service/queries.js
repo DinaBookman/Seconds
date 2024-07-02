@@ -1,9 +1,10 @@
 
 import { escapeId } from './db.js';
+import 'dotenv/config';
 
 const getProductsJoinTable = () => {
-    // const sql = "SELECT products.id,products.ownerId,products.title,products.description,categories.displayName AS category,statuses.description AS status,products.area,products.price,products.img,products.adDate,products.deactivated FROM products INNER JOIN categories ON products.categoryId = categories.id INNER JOIN statuses ON products.statusId = statuses.id";
-    const sql = "(SELECT products.id, products.ownerId, products.title,products.description, categories.displayName AS category,statuses.description AS status,products.area,products.price,products.img,products.adDate,products.deactivated FROM products INNER JOIN categories ON products.categoryId = categories.id INNER JOIN statuses ON products.statusId = statuses.id) AS completeProductes";
+
+    const sql = `(SELECT products.id, products.ownerId, products.title,products.description, categories.displayName AS category,statuses.description AS status,products.area,products.price,products.img,products.adDate,products.deactivated FROM ${process.env.DB_NAME}.products INNER JOIN ${process.env.DB_NAME}.categories ON products.categoryId = categories.id INNER JOIN ${process.env.DB_NAME}.statuses ON products.statusId = statuses.id) AS completeProductes`;
     return sql;
 }
 
@@ -51,35 +52,35 @@ console.log(sql)
 }
 
 const getProductByIdQuery = (table1, table2) => {
-    const query = `SELECT completeProductes.title,completeProductes.description,completeProductes.category,completeProductes.status,completeProductes.area,completeProductes.price,completeProductes.img,u.name,u.email,u.phone FROM ${table1}   join ${escapeId(table2)} u where ifnull(completeProductes.deactivated,0) = 0 and ifnull(u.deactivated,0) = 0 and completeProductes.id = ? and completeProductes.ownerId=u.id`;
+    const query = `SELECT completeProductes.title,completeProductes.description,completeProductes.category,completeProductes.status,completeProductes.area,completeProductes.price,completeProductes.img,u.name,u.email,u.phone FROM ${table1}   join ${process.env.DB_NAME}.${escapeId(table2)} u where ifnull(completeProductes.deactivated,0) = 0 and ifnull(u.deactivated,0) = 0 and completeProductes.id = ? and completeProductes.ownerId=u.id`;
     return query
 }
 
 const getByIdQuery = (table) => {
-    const query = `select * from ${escapeId(table)} where ifnull(deactivated,0) = 0 and id = ?`;
+    const query = `select * from ${process.env.DB_NAME}.${escapeId(table)} where ifnull(deactivated,0) = 0 and id = ?`;
     return query;
 }
 const getCategoryStatusQuery = (table) => {
-    const query = `select * from ${escapeId(table)}`;
+    const query = `select * from ${process.env.DB_NAME}.${escapeId(table)}`;
     return query;
 }
 
 const getByIdCategoryStatusQuery = (table) => {
-    const query = `select * from ${escapeId(table)} where id = ?`;
+    const query = `select * from ${process.env.DB_NAME}.${escapeId(table)} where id = ?`;
     return query;
 }
 const addQuery = (table, columns) => {
-    const query = `INSERT INTO ${escapeId(table)} (${columns.map((column) => escapeId(column))}) VALUES (${columns.map(() => '?')})`;
+    const query = `INSERT INTO ${process.env.DB_NAME}.${escapeId(table)} (${columns.map((column) => escapeId(column))}) VALUES (${columns.map(() => '?')})`;
     return query
 }
 const deleteQuery = (table) => {
-    const query = `DELETE FROM ${escapeId(table)} WHERE (id = ?)`;
+    const query = `UPDATE ${process.env.DB_NAME}.${escapeId(table)} SET deactivated = 1 WHERE (id = ?)`;
     return query
 }
 
 const updateQuery = (table, columns) => {
     const columnsNames = Object.keys(columns);
-    const query = `UPDATE ${escapeId(table)} SET ${columnsNames.map((column) => (escapeId(column) + '=?'))} WHERE (id = ?)`;
+    const query = `UPDATE ${process.env.DB_NAME}.${escapeId(table)} SET ${columnsNames.map((column) => (escapeId(column) + '=?'))} WHERE (id = ?)`;
     return query
 }
 export { getProductsJoinTable, getQuery, getByIdQuery,getByIdCategoryStatusQuery,getCategoryStatusQuery, addQuery, deleteQuery, updateQuery, getProductByIdQuery }

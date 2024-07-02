@@ -38,8 +38,8 @@ export class ProductsService {
 
     async deleteProduct(id) {
 
-        const queryPost = deleteQuery("products", "id");
-        const result = await executeQuery(queryPost, [id])
+        const queryProduct = deleteQuery("products");
+        const result = await executeQuery(queryProduct, [id])
         return result;
     }
     async updateProduct(productItem, imgSrc, productId) {

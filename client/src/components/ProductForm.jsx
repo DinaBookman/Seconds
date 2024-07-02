@@ -1,3 +1,4 @@
+
 // import React, { useState, useEffect } from 'react';
 // import PlaceAutocomplete from './searches/PlaceAutoComplete';
 // import { useForm, Controller } from 'react-hook-form';
@@ -12,9 +13,9 @@
 //     const [address, setAddress] = useState(product?.area || '');
 
 //     const [statusOptions, setStatusOptions] = useState([]); 
-//     const [categoryOptions, setCategoryOptions] = useState([]); // State to store options for react-select
+//     const [categoryOptions, setCategoryOptions] = useState([]); 
 
-//     // Fetch options for status select
+//     // Fetch options for status and category select
 //     const getStatusOptions = async () => {
 //         try {
 //             const result = await getStatuses();
@@ -48,6 +49,13 @@
 //         getCategoryOptions();
 //     }, []);
 
+//     useEffect(() => {
+//         if (product) {
+//             setValue("category", categoryOptions.find(option => option.value === product.categoryId));
+//             setValue("status", statusOptions.find(option => option.value === product.statusId));
+//         }
+//     }, [categoryOptions, statusOptions, product, setValue]);
+
 //     const onSubmit = async (data) => {
 //         const formData = new FormData();
 
@@ -59,11 +67,10 @@
 //         if (data.description !== product?.description) {
 //             formData.append('description', data.description);
 //         }
-//         if (data.category !== product?.category) {
+//         if (data.category?.value !== product?.categoryId) {
 //             formData.append('categoryId', data.category.value);
-//             console.log(data.category)
 //         }
-//         if (data.state !== product?.state) {
+//         if (data.status?.value !== product?.statusId) {
 //             formData.append('statusId', data.status.value);
 //         }
 //         if (address !== product?.area) {
@@ -72,7 +79,9 @@
 //         if (data.price !== product?.price) {
 //             formData.append('price', data.price);
 //         }
-//         if (data.image && data.image[0]) {
+
+//         // Handle image upload
+//         if (data.image && data.image.length > 0) {
 //             formData.append('image', data.image[0]);
 //         }
 
@@ -81,6 +90,11 @@
 //         }
 //         if (setEdit) {
 //             setEdit(formData);
+//         }
+
+//         // Log FormData entries for debugging
+//         for (let [key, value] of formData.entries()) {
+//             console.log(key, value);
 //         }
 //     };
 
@@ -127,6 +141,7 @@
 //                             components={makeAnimated()}
 //                             isClearable
 //                             placeholder="Select..."
+//                             defaultValue={field.value}
 //                         />
 //                     )}
 //                 />
@@ -146,11 +161,13 @@
 //                             components={makeAnimated()}
 //                             isClearable
 //                             placeholder="Select..."
+//                             defaultValue={field.value}
 //                         />
 //                     )}
 //                 />
 //                 {errors.status && <p>{errors.status.message}</p>}
 //             </div>
+
 //             <div>
 //                 <label htmlFor="area">Area</label>
 //                 <PlaceAutocomplete address={address} setAddress={setAddress} />
@@ -159,9 +176,9 @@
 
 //             <div>
 //                 <label htmlFor="image">Image Upload</label>
-//                 {product?.image && (
+//                 {product?.img && (
 //                     <div>
-//                         <img src={product.image} alt="Current" width="100" />
+//                         <img src={product.img} alt="Current" width="100" />
 //                         <p>Current Image</p>
 //                     </div>
 //                 )}
@@ -187,17 +204,17 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { getCategories, getStatuses } from '../api';
 
-const ProductForm = ({ product, setEdit, setData }) => {
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm({
+const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
+    const { register, handleSubmit, formState: { errors }, control } = useForm({
         defaultValues: product || {},
     });
     const [address, setAddress] = useState(product?.area || '');
 
-    const [statusOptions, setStatusOptions] = useState([]); 
-    const [categoryOptions, setCategoryOptions] = useState([]); 
+    const [statusOptions, setStatusOptions] = useState([]);
+    const [categoryOptions, setCategoryOptions] = useState([]);
 
     // Fetch options for status and category select
-    const getStatusOptions = async () => {
+    const fetchStatusOptions = async () => {
         try {
             const result = await getStatuses();
             const formattedOptions = result.map(status => ({
@@ -206,12 +223,12 @@ const ProductForm = ({ product, setEdit, setData }) => {
             }));
             setStatusOptions(formattedOptions);
         } catch (error) {
-            console.error('Oops something went wrong...', error);
+            console.error('Error fetching statuses:', error);
             alert('Oops something went wrong...');
         }
     };
 
-    const getCategoryOptions = async () => {
+    const fetchCategoryOptions = async () => {
         try {
             const result = await getCategories();
             const formattedOptions = result.map(category => ({
@@ -220,28 +237,22 @@ const ProductForm = ({ product, setEdit, setData }) => {
             }));
             setCategoryOptions(formattedOptions);
         } catch (error) {
-            console.error('Oops something went wrong...', error);
+            console.error('Error fetching categories:', error);
             alert('Oops something went wrong...');
         }
     };
 
     useEffect(() => {
-        getStatusOptions();
-        getCategoryOptions();
+        fetchStatusOptions();
+        fetchCategoryOptions();
     }, []);
-
-    useEffect(() => {
-        if (product) {
-            setValue("category", categoryOptions.find(option => option.value === product.categoryId));
-            setValue("status", statusOptions.find(option => option.value === product.statusId));
-        }
-    }, [categoryOptions, statusOptions, product, setValue]);
 
     const onSubmit = async (data) => {
         const formData = new FormData();
 
         formData.append('ownerId', 1);
 
+        // Append form data based on changes
         if (data.title !== product?.title) {
             formData.append('title', data.title);
         }
@@ -266,6 +277,7 @@ const ProductForm = ({ product, setEdit, setData }) => {
             formData.append('image', data.image[0]);
         }
 
+        // Handle setData and setEdit if provided
         if (setData) {
             setData(formData);
         }
@@ -315,13 +327,16 @@ const ProductForm = ({ product, setEdit, setData }) => {
                     name="category"
                     control={control}
                     rules={{ required: 'Category is required' }}
+
                     render={({ field }) => (
                         <Select
                             {...field}
                             options={categoryOptions}
                             components={makeAnimated()}
                             isClearable
+                            tabSelectsValue
                             placeholder="Select..."
+                            defaultInputValue={product ? product?.category.toUpperCase() : null}
                         />
                     )}
                 />
@@ -341,6 +356,7 @@ const ProductForm = ({ product, setEdit, setData }) => {
                             components={makeAnimated()}
                             isClearable
                             placeholder="Select..."
+                            defaultInputValue={product ? product.status.toUpperCase() : null}
                         />
                     )}
                 />
@@ -349,7 +365,7 @@ const ProductForm = ({ product, setEdit, setData }) => {
 
             <div>
                 <label htmlFor="area">Area</label>
-                <PlaceAutocomplete address={address} setAddress={setAddress} />
+                <PlaceAutocomplete address={address} setAddress={setAddress} required />
                 {errors.area && <p>{errors.area.message}</p>}
             </div>
 
@@ -369,9 +385,11 @@ const ProductForm = ({ product, setEdit, setData }) => {
                 {errors.image && <p>{errors.image.message}</p>}
             </div>
 
-            <button type="submit">Submit</button>
+            <button type="submit">{setEdit ? 'UPDATE' : 'ADD'}</button>
+            {setEdit && <button onClick={() => setIsUpdate(-1)}>CANCEL</button>}
         </form>
     );
 };
 
 export default ProductForm;
+

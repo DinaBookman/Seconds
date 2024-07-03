@@ -11,19 +11,16 @@ export class UserLoginController {
 
             // Check reCAPTCHA validation result
             if (!isRecaptchaValid.success) {
-                return res.status(400).json({ message: 'reCAPTCHA verification failed.' }); 
+                return res.status(400).json({ message: 'reCAPTCHA verification failed.' });
             }
-        
+
             const userLoginService = new UserLoginService();
             console.log(userData.data)
-            const resultItem = await userLoginService.checkUserLogin(userData.data);
-            console.log(resultItem)
-            res.cookie('user', JSON.stringify({ id: userData.data.id, username: userData.data.username }), {
-                httpOnly: true,
-                secure: false, // Set to true in production with HTTPS
-                maxAge: 24 * 60 * 60 * 1000 // 1 day
-              });
-            res.status(200).json(resultItem)
+
+            const  jwtToken = await userLoginService.checkUserLogin(userData.data);
+            res.cookie('x-access-token', jwtToken, { httpOnly: true, secure: true, maxAge: 259200000 })
+               .json({ token: jwtToken })
+
         }
         catch (ex) {
             const err = {}

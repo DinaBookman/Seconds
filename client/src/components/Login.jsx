@@ -35,18 +35,14 @@ const Login = () => {
     captchaRef.current.reset();
 
     try {
-      const userId = await checkUserLogin(data,token);
-      console.log(userId)
-      if (userId) {
-        const user = { id: userId, username: data.username };
-        Cookies.set('user', JSON.stringify(user), { expires: 1 }); // Save user in cookie
+      const jwtToken = await checkUserLogin(data,token);
+      console.log(jwtToken)
+        const user = { id: 6, username: data.username };
+        // Cookies.set('user', JSON.stringify(user), { expires: 1 }); // Save user in cookie
         setExist(true);
         setCurrentUser(user);
         const from = location.state?.from || '/home';
         navigate(from);
-      } else {
-        setExist(false);
-      }
     } catch (error) {
       setExist(false);
       console.error('Error logging in:', error);

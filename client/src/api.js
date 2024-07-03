@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 export const fetchProducts = async (query) => {
     try {
         const response = await fetch(`http://localhost:8080/products?${query}`);
@@ -25,12 +26,15 @@ export const fetchProduct = async (productId) => {
 };
 
 export const addProduct = async (data) => {
+
     try {
 
         const response = await fetch('http://localhost:8080/products', {
             method: 'POST',
             body: data,
+            credentials:'include',
             headers: {
+                
                 // 'Content-Type': 'multipart/form-data', // Don't set this manually when using FormData
                 'Accept': 'application/json',
             },
@@ -49,11 +53,14 @@ export const addProduct = async (data) => {
 }
 
 export const updateProduct = async (edit, id) => {
+
     try {
         const response = await fetch(`http://localhost:8080/products/${id}`, {
             method: 'PATCH',
             body: edit,
+            credentials:'include',
             headers: {
+
                 'Accept': 'application/json'
             }
         });
@@ -71,12 +78,14 @@ export const updateProduct = async (edit, id) => {
 }
 
 export const removeProduct = async (productId) => {
+
     try {
         const response = await fetch(`http://localhost:8080/products/${productId}`, {
             method: 'DELETE',
+            credentials:'include',
 
         });
-console.log(response);
+        console.log(response);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -90,8 +99,10 @@ console.log(response);
 }
 
 export const fetchUser = async (userId) => {
+
+
     try {
-        const response = await fetch(`http://localhost:8080/users/${userId}`);
+        const response = await fetch(`http://localhost:8080/users/${userId}`,{credentials:'include'});
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -124,11 +135,13 @@ export const addUser = async (user) => {
 };
 
 export const updateUser = async (userId, updatedUser) => {
+
     try {
-        console.log(updateUser);
+
         const response = await fetch(`http://localhost:8080/users/${userId}`, {
             method: 'PATCH',
             body: JSON.stringify(updatedUser),
+            credentials:'include',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
@@ -164,12 +177,12 @@ export const checkUserLogin = async (data, token) => {
         const response = await fetch('http://localhost:8080/userLogin', {
             method: 'POST',
             body: JSON.stringify({ data, token }),
-            //credentials: 'include', // Send cookies with the request
+            credentials: 'include', // Send cookies with the request
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         });
-
+        console.log("חוטכאטכ")
         if (!response.ok) {
             throw new Error('Login failed');
         }

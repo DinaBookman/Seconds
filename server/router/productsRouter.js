@@ -5,6 +5,7 @@ import multer from 'multer';
 
 //import { ProductsService } from '../service/productsService.js';
 import { ProductsController } from "../controllers/productsController.js";
+import { verifyToken } from '../middleware/verifyToken.js';
 const storage = multer.diskStorage({
     destination: (req, file, callBack) => {
         callBack(null, './uploads');
@@ -23,11 +24,11 @@ productsRouter.get("/", productsController.getProducts)
 
 productsRouter.get("/:id", productsController.getProduct)
 
-productsRouter.post('/', upload, productsController.addProduct);
+productsRouter.post('/',verifyToken, upload, productsController.addProduct);
 
-productsRouter.delete("/:id", productsController.deleteProduct)
+productsRouter.delete("/:id",verifyToken, productsController.deleteProduct)
 
-productsRouter.patch("/:id",upload, productsController.updateProduct)
+productsRouter.patch("/:id",verifyToken,upload, productsController.updateProduct)
 
 export {
     productsRouter

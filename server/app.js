@@ -19,6 +19,7 @@ import { usersRouter } from './router/usersRouter.js';
 import { userLoginRouter } from './router/userLoginRouter.js';
 import { categoriesRouter } from './router/categoriesRouter.js';
 import { statusesRouter } from './router/statusesRouter.js';
+import { verifyToken } from './middleware/verifyToken.js';
 // import {Errors} from './middleware/errors.js'
 const server = express();
 server.use('/uploads', express.static('uploads'));
@@ -28,8 +29,11 @@ const corsOptions ={
     optionSuccessStatus:200,
  }
 server.use(cors({
+    origin: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'], // מתודות המורשות
+    allowedHeaders: ['Content-Type', 'Authorization'] ,// כותרות מותרות
     credentials: true
-  }))
+}))
 server.use(express.json());
 server.use(bodyparser.json())
 server.use(bodyparser.urlencoded({
@@ -38,11 +42,11 @@ server.use(bodyparser.urlencoded({
 server.use(cookieParser());
 
 
-
+server.use('/userLogin',userLoginRouter)
 
 server.use('/products',productsRouter);
 server.use('/users',usersRouter);
-server.use('/userLogin',userLoginRouter)
+
 server.use('/categories',categoriesRouter);
 server.use('/statuses',statusesRouter);
 

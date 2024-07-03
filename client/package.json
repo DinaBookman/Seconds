@@ -15,6 +15,7 @@
     "antd": "^5.18.3",
     "dotenv": "^16.4.5",
     "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
     "primeicons": "^7.0.0",
     "primereact": "^10.6.6",
     "rc-slider": "^10.6.2",

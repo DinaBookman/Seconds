@@ -8,7 +8,8 @@ export class ProductsController {
         try {
 
             const productsService = new ProductsService();
-            const resultItems = await productsService.getProducts(req.query);
+            let resultItems = await productsService.getProducts(req.query);
+            resultItems = resultItems.map((product) => ({...product,img:`${process.env.API_URL}/uploads/` + product.img}))
             return res.status(200).json(resultItems);
         }
         catch (ex) {
@@ -22,7 +23,8 @@ export class ProductsController {
     async getProduct(req, res, next) {
         try {
             const todosService = new ProductsService();
-            const resultItem = await todosService.getProduct(req.params.id);
+            let resultItem = await todosService.getProduct(req.params.id);
+            resultItem = [{ ...resultItem[0], img: `${process.env.API_URL}/uploads/` + resultItem[0].img }]
             res.status(200).json({ status: 200, data: resultItem });
         }
         catch (ex) {
@@ -38,10 +40,9 @@ export class ProductsController {
 
     async addProduct(req, res, next) {
         const productsService = new ProductsService();
-        const imgSrc = 'http://localhost:8080/uploads/' + req.file.filename;
-
+        const imgSrc = req.file.filename;
         const productItem = req.body;
-        console.log(req.body,req.file);
+        console.log(imgSrc,productItem,"fgxfchvjkb")
         try {
             const result = await productsService.addProduct(productItem, imgSrc);
             res.json({ message: 'Product added successfully', result });
@@ -65,12 +66,11 @@ export class ProductsController {
         }
     }
     async updateProduct(req, res, next) {
-        console.log(req)
         const productsService = new ProductsService();
-        const imgSrc = req.file ? 'http://localhost:8080/uploads/' + req.file.filename : null;
+        const imgSrc = req.file ?  req.file.filename : null;
 
         const productItem = req.body;
-console.log(req.body)
+
         try {
             const result = await productsService.updateProduct(productItem, imgSrc, req.params.id);
             res.json({ message: 'Product added successfully', result });

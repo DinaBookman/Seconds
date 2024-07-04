@@ -1,10 +1,10 @@
 import { useState, useContext } from 'react';
 import { NavLink } from "react-router-dom";
-import { UserContext } from '../App';
+import { UserContext } from '../../App';
 import './Navbar.css'; // Assuming you saved the CSS in Navbar.css
 
 function Navbar() {
-  const [currentUser] = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useContext(UserContext);
   const [isActive, setIsActive] = useState(false);
   const [dropdownActive, setDropdownActive] = useState(false);
 

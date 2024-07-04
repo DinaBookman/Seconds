@@ -43,7 +43,6 @@ export class ProductsService {
         return result;
     }
     async updateProduct(productItem, imgSrc, productId) {
-        console.log("kkkkkkkkkk", productItem, Object.keys(productItem))
         const nowDate = new Date();
         const date = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
         const updatedProduct = imgSrc ? { ...productItem, 'img': imgSrc, 'adDate': date } : { ...productItem, 'adDate': date }

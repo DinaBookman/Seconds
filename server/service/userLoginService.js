@@ -17,17 +17,17 @@ export class UserLoginService {
     async checkUserLogin(newUser) {
         const queryUsers = getQuery('userlogin', [{ field: 'username', comparison: undefined, value: newUser.username }]);
         const result = await executeQuery(queryUsers.sql, queryUsers.queryParams);
-        console.log("חוטכאטכ")
-        if(result.length===0)
+
+        if (result.length === 0)
             throw new Error("Doesn't exist")
-        console.log("לללללללללללל")
+
         if (result.length != 0 && !bcrypt.compare(newUser.password, result[0].password))
             throw new Error("Password error")
-        console.log("ממממממממממ")
 
         const token = jwt.sign({ id: result[0].username }, "privateKey", { expiresIn: '20m' });
-       // const refreshtoken = jwt.sign({ id: result[0].username }, "keyrefresh", { expiresIn: '1d' });
-        return token;
+        const refreshtoken = jwt.sign({ id: result[0].username }, "keyrefresh", { expiresIn: '1d' });
+        console.log(token, refreshtoken)
+        return [token, refreshtoken,{id:result[0].id,usename:result[0].username}];
     }
 
     async getUserLogin(query) {

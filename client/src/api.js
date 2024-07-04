@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie';
+import { API_URL } from "./env";
 export const fetchProducts = async (query) => {
     try {
-        const response = await fetch(`http://localhost:8080/products?${query}`);
+        const response = await fetch(`${API_URL}/products?${query}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -14,7 +14,7 @@ export const fetchProducts = async (query) => {
 
 export const fetchProduct = async (productId) => {
     try {
-        const response = await fetch(`http://localhost:8080/products/${productId}`);
+        const response = await fetch(`${API_URL}/products/${productId}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -25,76 +25,128 @@ export const fetchProduct = async (productId) => {
     }
 };
 
+
 export const addProduct = async (data) => {
-
     try {
-
-        const response = await fetch('http://localhost:8080/products', {
+        console.log("fxhgfchkvjk",`${API_URL}/products`)
+        let response = await fetch(`${API_URL}/products`, {
             method: 'POST',
             body: data,
-            credentials:'include',
+            credentials: 'include',
             headers: {
-                
-                // 'Content-Type': 'multipart/form-data', // Don't set this manually when using FormData
                 'Accept': 'application/json',
             },
         });
+        console.log("grhjdhfkjjjjjjjjjjh");
+        if (response.status === 401) {
+
+            const tokens = await refreshToken();
+
+            if (tokens.accessToken) {
+             
+                response = await fetch(`${API_URL}/products`, {
+                    method: 'POST',
+                    body: data,
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                });
+            } else {
+                throw new Error('Refresh token failed. Please log in again.');
+            }
+        }
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return await response.json();
-
+        return await response.json(); 
     } catch (error) {
         console.error('Error uploading product:', error);
-        alert('Error uploading product');
+        throw error;
     }
-}
+};
+
 
 export const updateProduct = async (edit, id) => {
 
     try {
-        const response = await fetch(`http://localhost:8080/products/${id}`, {
+        let response = await fetch(`${API_URL}/products/${id}`, {
             method: 'PATCH',
             body: edit,
-            credentials:'include',
+            credentials: 'include',
             headers: {
 
                 'Accept': 'application/json'
             }
         });
 
+        if (response.status === 401) {
+
+            const tokens = await refreshToken();
+
+            if (tokens.accessToken) {
+
+                response = await fetch(`${API_URL}/products/${id}`, {
+                    method: 'PATCH',
+                    body: edit,
+                    credentials: 'include',
+                    headers: {
+
+                        'Accept': 'application/json'
+                    }
+                });
+            } else {
+                throw new Error('Refresh token failed. Please log in again.'); 
+            }
+        }
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return await response.json();
-
+        return await response.json(); 
     } catch (error) {
         console.error('Error updating product:', error);
-        alert('Error updating product');
+        throw error;
     }
-}
+};
+
+
 
 export const removeProduct = async (productId) => {
 
     try {
-        const response = await fetch(`http://localhost:8080/products/${productId}`, {
+        let response = await fetch(`${API_URL}/products/${productId}`, {
             method: 'DELETE',
-            credentials:'include',
+            credentials: 'include',
 
         });
-        console.log(response);
+        if (response.status === 401) {
+            
+            const tokens = await refreshToken();
+
+            if (tokens.accessToken) {
+                
+                response = await fetch(`${API_URL}/products/${productId}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+
+                });
+            } else {
+                throw new Error('Refresh token failed. Please log in again.');
+            }
+        }
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         return await response.json();
-
     } catch (error) {
-        console.error('Error updating product:', error);
-        alert('Error updating product');
+        console.error('Error removing product:', error);
+        throw error;
     }
 }
 
@@ -102,21 +154,39 @@ export const fetchUser = async (userId) => {
 
 
     try {
-        const response = await fetch(`http://localhost:8080/users/${userId}`,{credentials:'include'});
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        let response = await fetch(`${API_URL}/users/${userId}`,
+            {
+                credentials: 'include'
+            });
+        if (response.status === 401) {
+           
+            const tokens = await refreshToken();
+
+            if (tokens.accessToken) {
+               
+                response = await fetch(`${API_URL}/users/${userId}`,
+                    {
+                        credentials: 'include'
+                    });
+            } else {
+                throw new Error('Refresh token failed. Please log in again.');
+            }
         }
-        const data = await response.json();
-        return data;
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json(); 
     } catch (error) {
-        throw error;
+        console.error('Error removing product:', error);
+        throw error; 
     }
 };
 
 export const addUser = async (user) => {
     try {
-        console.log(updateUser);
-        const response = await fetch(`http://localhost:8080/users`, {
+        const response = await fetch(`${API_URL}/users`, {
             method: 'POST',
             body: JSON.stringify(user),
             headers: {
@@ -138,28 +208,49 @@ export const updateUser = async (userId, updatedUser) => {
 
     try {
 
-        const response = await fetch(`http://localhost:8080/users/${userId}`, {
+        let response = await fetch(`${API_URL}/users/${userId}`, {
             method: 'PATCH',
             body: JSON.stringify(updatedUser),
-            credentials:'include',
+            credentials: 'include',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         });
 
+        if (response.status === 401) {
+            
+            const tokens = await refreshToken();
+
+            if (tokens.accessToken) {
+                
+                response = await fetch(`${API_URL}/users/${userId}`,
+                    {
+                        method: 'PATCH',
+                        body: JSON.stringify(updatedUser),
+                        credentials: 'include',
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        }
+                    });
+            } else {
+                throw new Error('Refresh token failed. Please log in again.'); 
+            }
+        }
+
         if (!response.ok) {
-            throw new Error("Something went wrong");
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         return await response.json();
     } catch (error) {
-        throw error;
+        console.error('Error updating user:', error);
+        throw error; 
     }
 };
 
 export const fetchUserLogin = async (username) => {
     try {
-        const response = await fetch(`http://localhost:8080/userLogin?username=${username}`);
+        const response = await fetch(`${API_URL}/userLogin?username=${username}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -174,15 +265,16 @@ export const checkUserLogin = async (data, token) => {
 
 
     try {
-        const response = await fetch('http://localhost:8080/userLogin', {
+
+        const response = await fetch(`${API_URL}/userLogin`, {
             method: 'POST',
             body: JSON.stringify({ data, token }),
-            credentials: 'include', // Send cookies with the request
+            credentials: 'include', 
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         });
-        console.log("חוטכאטכ")
+        console.log("dfghklgjfzdxghjkhjgf")
         if (!response.ok) {
             throw new Error('Login failed');
         }
@@ -196,7 +288,7 @@ export const checkUserLogin = async (data, token) => {
 
 export const getStatuses = async () => {
     try {
-        const response = await fetch(`http://localhost:8080/statuses`);
+        const response = await fetch(`${API_URL}/statuses`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -209,7 +301,7 @@ export const getStatuses = async () => {
 
 export const getCategories = async () => {
     try {
-        const response = await fetch(`http://localhost:8080/categories`);
+        const response = await fetch(`${API_URL}/categories`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -217,5 +309,32 @@ export const getCategories = async () => {
         return data;
     } catch (error) {
         throw error;
+    }
+};
+
+
+
+export const refreshToken = async () => {
+    try {
+        const response = await fetch(`${API_URL}/userLogin/refreshToken`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to refresh token: ${response.status}`);
+        }
+
+        const tokens = await response.json(); 
+
+     
+        return tokens;
+    } catch (error) {
+        console.error('Error refreshing token:', error);
+        throw error; 
     }
 };

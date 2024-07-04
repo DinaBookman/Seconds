@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from "react";
-import ProductForm from "./ProductForm";
+import ProductForm from "./productForm/ProductForm";
 import { updateProduct } from "../api";
 
-const UpdateProduct = ({ product,setIsUpdate,getMyProducts }) => {
+const UpdateProduct = ({ product, setIsUpdate, getMyProducts }) => {
     const [edit, setEdit] = useState(null);
 
     const patchProduct = async () => {
         if (edit) {
             try {
-                const reasult = await updateProduct(edit,product.id)
+                const reasult = await updateProduct(edit, product.id)
                 alert(reasult.message);
                 setIsUpdate(-1);
                 getMyProducts();
             } catch (error) {
-                console.error( error);
-                alert('Error updating product');
+                if (error.message.includes('Refresh token failed')) {
+                    alert('Session expired. Please log in again.');
+                    navigate('/login'); // Navigate to the login page
+                }
+                else {
+                    console.error(error);
+                    alert('Error updating product');
+                }
             }
         }
     };

@@ -127,7 +127,7 @@ import { fetchUser, updateUser } from "../../api";
 const MyProfile = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext);
     const [user, setUser] = useState({});
-    
+
     const {
         register,
         control,
@@ -136,22 +136,28 @@ const MyProfile = () => {
         setValue
     } = useForm();
 
-    const getUser = async () => {
+    const getUser = async (id = currentUser.id) => {
         try {
-            const result = await fetchUser(currentUser.id);
+            const result = await fetchUser(id);
             setUser(result[0]);
             // Set default values for form fields
             setValue('name', result[0].name);
             setValue('email', result[0].email);
             setValue('phone', result[0].phone);
             console.log(result[0]);
-        } catch (err) {
-            console.error(err);
+        } catch (error) {
+            if (error.message.includes('Refresh token failed')) {
+                alert('Session expired. Please log in again.');
+                navigate('/login'); // Navigate to the login page
+            }
+            else {
+                alert("Oops, something went wrong... please try again!");
+            }
         }
     }
 
     useEffect(() => {
-        getUser();
+        getUser(!currentUser && JSON.parse(localStorage.getItem("currentUser")).id);
     }, [])
 
     const updateDetails = async (updatedUser) => {
@@ -159,7 +165,13 @@ const MyProfile = () => {
             await updateUser(currentUser.id, updatedUser);
             alert("User updated successfully!");
         } catch (error) {
-            alert("Oops, something went wrong... please try again!");
+            if (error.message.includes('Refresh token failed')) {
+                alert('Session expired. Please log in again.');
+                navigate('/login'); // Navigate to the login page
+            }
+            else {
+                alert("Oops, something went wrong... please try again!");
+            }
         }
     }
 
@@ -183,8 +195,8 @@ const MyProfile = () => {
             <h1>My Profile</h1>
             <form noValidate onSubmit={handleSubmit(onSubmit)}>
                 {console.log(user.name, "  name")}
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     name="name"
                     {...register("name", {
                         required: "Name is required.",
@@ -192,12 +204,12 @@ const MyProfile = () => {
                             value: /^[a-zA-Z. ]+$/,
                             message: "Name is not valid."
                         }
-                    })} 
+                    })}
                 />
                 {errors.name && <p>{errors.name.message}</p>}
 
-                <input 
-                    type="email" 
+                <input
+                    type="email"
                     name="email"
                     {...register("email", {
                         required: "Email is required.",
@@ -205,7 +217,7 @@ const MyProfile = () => {
                             value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
                             message: "Email is not valid."
                         }
-                    })} 
+                    })}
                 />
                 {errors.email && <p>{errors.email.message}</p>}
 

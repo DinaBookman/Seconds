@@ -3,12 +3,11 @@ import { useParams, useNavigate, Outlet } from "react-router-dom";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
-import FullProduct from "./FullProduct";
-import Searches from "./searches/Searches";
+import Searches from "../searches/Searches";
 import "./Products.css";
-import Product from "./Product";
+import Product from "../Product";
 import { FaArrowUp } from "react-icons/fa";
-import { fetchProducts } from "../api";
+import { fetchProducts } from "../../api";
 
 function Products() {
   const [products, setProducts] = useState([]);

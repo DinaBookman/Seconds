@@ -2,9 +2,10 @@ import React, { useState, useContext, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Cookies from 'js-cookie';
-import { UserContext } from '../App';
-import { checkUserLogin } from '../api';
+import { UserContext } from '../../App';
+import { checkUserLogin } from '../../api';
+import { RECAPTCHA_SITE_KEY, RECAPTCHA_DATA_SITE_KEY } from '../../env'
+
 
 
 const Login = () => {
@@ -33,16 +34,16 @@ const Login = () => {
     }
     setRecaptchaError(false)
     captchaRef.current.reset();
-
+    console.log(token)
     try {
-      const jwtToken = await checkUserLogin(data,token);
-      console.log(jwtToken)
-        const user = { id: 6, username: data.username };
-        // Cookies.set('user', JSON.stringify(user), { expires: 1 }); // Save user in cookie
-        setExist(true);
-        setCurrentUser(user);
-        const from = location.state?.from || '/home';
-        navigate(from);
+      const user = await checkUserLogin(data, token);
+
+      console.log(user)
+      localStorage.setItem("currentUser", JSON.stringify(user))
+      setExist(true);
+      setCurrentUser(user);
+      const from = location.state?.from || '/home';
+      navigate(from);
     } catch (error) {
       setExist(false);
       console.error('Error logging in:', error);
@@ -53,10 +54,10 @@ const Login = () => {
 
   return (
     <>
-    <div><Link style={{ textDecoration: 'underline' }} to={'/home'}>exit connect</Link></div>
+      <div><Link style={{ textDecoration: 'underline' }} to={'/home'}>exit connect</Link></div>
       <h1>login</h1>
       {!exist && <div>Incorrect username or password</div>}
-      {recaptchaError && <div>Please verify that you are not a robot.</div>} 
+      {recaptchaError && <div>Please verify that you are not a robot.</div>}
       <form noValidate onSubmit={handleSubmit(logIn)}>
         <input type='text' name='username' placeholder='username'
           {...register("username", {
@@ -68,13 +69,14 @@ const Login = () => {
             required: "password is required.",
           })} />
         {errors.password ? <p>{errors.password.message}</p> : <br />}
-        <ReCAPTCHA sitekey='6Le45PQpAAAAAMmqahVM7Clw7wrXviXTkesVYVMY'
+        <ReCAPTCHA sitekey={RECAPTCHA_SITE_KEY}
           ref={captchaRef}
         />
-        <div className="h-captcha" data-sitekey="b8cd8c24-4840-4155-ba11-bdc0c7f9a353"></div>
+        <div className="h-captcha" data-sitekey={RECAPTCHA_DATA_SITE_KEY}></div>
         <input type="submit" value="Log In" />
       </form>
       <div>new here? <Link style={{ textDecoration: 'underline' }} to={'/auth/register'}>please sign up</Link></div>
+      {/* <div>Forgot your password? <Link style={{ textDecoration: 'underline' }} to={'/auth/forgot-password'}>Reset Password</Link></div> */}
     </>
   )
 }

@@ -23,11 +23,7 @@ import { verifyToken } from './middleware/verifyToken.js';
 // import {Errors} from './middleware/errors.js'
 const server = express();
 server.use('/uploads', express.static('uploads'));
-const corsOptions ={
-    origin:'*', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200,
- }
+
 server.use(cors({
     origin: true,
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'], // מתודות המורשות
@@ -41,6 +37,12 @@ server.use(bodyparser.urlencoded({
 }))
 server.use(cookieParser());
 
+server.post('/logout', (req, res) => {
+    res.clearCookie('x-access-token', { httpOnly: true, secure: true });
+    res.clearCookie('refresh-token', { httpOnly: true, secure: true });
+    res.status(200).json({ message: 'Logout successful' });
+});
+
 
 server.use('/userLogin',userLoginRouter)
 
@@ -49,6 +51,8 @@ server.use('/users',usersRouter);
 
 server.use('/categories',categoriesRouter);
 server.use('/statuses',statusesRouter);
+
+
 
 // server.use(Errors);
 

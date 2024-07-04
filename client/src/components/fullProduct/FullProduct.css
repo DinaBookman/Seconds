@@ -1,0 +1,105 @@
+.full-product {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.full-product h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.full-product img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.full-product p {
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.full-product .price {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #b12704;
+}
+
+.full-product .status {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.full-product .area {
+  font-size: 1em;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.full-product a,
+.full-product a:visited {
+  color: #0066cc;
+  text-decoration: none;
+  font-size: 1.1em;
+}
+
+.full-product a:hover {
+  text-decoration: underline;
+}
+
+.full-product .contact {
+  margin-top: 20px;
+}
+
+.full-product .contact h5 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.full-product .contact div {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  .full-product {
+    padding: 15px;
+  }
+
+  .full-product h1 {
+    font-size: 1.5em;
+  }
+
+  .full-product p {
+    font-size: 1em;
+  }
+
+  .full-product .price {
+    font-size: 1.2em;
+  }
+
+  .full-product .contact h5 {
+    font-size: 1em;
+  }
+
+  .full-product .contact div, .full-product a {
+    font-size: 1em;
+  }
+}

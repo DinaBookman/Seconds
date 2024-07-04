@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../App';
-import ProductForm from './ProductForm';
+import ProductForm from './productForm/ProductForm';
 import { addProduct } from '../api';
 
 const ProductUploadForm = () => {
@@ -11,8 +11,7 @@ const ProductUploadForm = () => {
 
   // Check if the user is logged in
   useEffect(() => {
-    if (!currentUser) {
-      // Redirect to login and set the state to navigate back after login
+    if (!currentUser&& !JSON.parse(localStorage.getItem("currentUser"))) {
       navigate('/auth/login', { state: { from: '/home/post' } });
     }
   }, [currentUser, navigate]);

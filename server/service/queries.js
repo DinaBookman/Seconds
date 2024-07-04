@@ -47,7 +47,7 @@ function getQuery(table, params, orderBy, limit, offset) {
         queryParams.push(offset);
     }
 
-console.log(sql)
+
     return { sql, queryParams };
 }
 

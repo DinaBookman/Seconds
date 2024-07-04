@@ -28,6 +28,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0",
+    "react-slideshow-image": "^4.3.1",
     "react-virtualized": "^9.22.5",
     "react-window": "^1.8.10",
     "styled-components": "^6.1.11"

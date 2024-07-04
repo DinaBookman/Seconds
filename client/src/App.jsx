@@ -2,31 +2,28 @@ import React, { createContext, useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import './App.css';
 import Home from './components/Home.jsx';
-import Login from './components/Login.jsx'
-import Cookies from 'js-cookie';
-//import Register from './components/Register.jsx'
-import Products from './components/Products.jsx'
+import Login from './components/login/Login.jsx'
+import Products from './components/products/Products.jsx'
 import FailToLoadPage from './components/FailToLoadPage.jsx'
 import ProductUploadForm from './components/ProductUploadForm.jsx';
 import Register from './components/register/Register.jsx';
-import FullProduct from './components/FullProduct';
+import FullProduct from './components/fullProduct/FullProduct.jsx';
 import Profile from './components/profile/Profile.jsx';
 import Logout from './components/profile/Logout.jsx';
 import MyProducts from './components/profile/MyProducts.jsx';
 import MyProfile from './components/profile/MyProfile.jsx';
+// import SendCode from './components/login/SendVerificationCode.jsx';
+// import ResetPassword from './components/login/ResetPassword.jsx';
 export const UserContext = createContext();
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  const getUserFromCookie = () => {
-    const userCookie = Cookies.get('user');
-    return userCookie ? JSON.parse(userCookie) : null;
-  };
+
   useEffect(() => {
-    setCurrentUser(getUserFromCookie);
+    setCurrentUser(JSON.parse(localStorage.getItem("currentUser")));
   }, [])
-  //console.log(currentUser)
-  //const currentPage = currentUser ? `/users/${currentUser.id}/home` : "/login";
+  
+
   return (
 
     <>
@@ -48,6 +45,8 @@ function App() {
             <Route path='/auth'>
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              {/* <Route path="forgot-password" element={<SendCode />} />
+              <Route path="reset-password" element={<ResetPassword />} /> */}
             </Route>
             {/* //? */}
             <Route path='/logout' element={<Logout />} />

@@ -3,7 +3,7 @@ import 'dotenv/config'
 async function verifyRecaptcha (token) {
     const secretKey = process.env.REACT_APP_SECRET_KEY;
     const url = `https://www.google.com/recaptcha/api/siteverify`;
-
+console.log("esrhdfgukhil")
     try {
         const res = await fetch(url, {
             method: 'POST',

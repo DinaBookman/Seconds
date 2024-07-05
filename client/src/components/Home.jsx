@@ -12,18 +12,26 @@ function Home() {
     "http://localhost:8080/uploads/download1.jpg",
     "http://localhost:8080/uploads/shopping.png",
     "http://localhost:8080/uploads/shopping (1).webp",
-];
+  ];
   return (
     <>
-     <Navbar/>
-     <Zoom scale={1.4} indicators={true} duration={3000} transitionDuration={1000}>
-            {images.map((each, index) => (
-                <div key={index} style={{ width: "100%" }}>
-                    <img style={{width:'100%'}} alt="Slide Image" src={each} />
-                </div>
-            ))}
-        </Zoom>
-     <Outlet/>
+      <Navbar />
+      <Zoom
+        scale={1.4}
+        indicators={true}
+        duration={3000}
+        transitionDuration={1000}
+        pauseOnHover={false}  >
+        {images.map((each, index) => (<div key={index} style={{ width: "100%", height: "75vh", overflow: "hidden" }}>
+          <img
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            alt="Slide Image"
+            src={each}
+          />
+        </div>
+        ))}
+        </Zoom >
+    <Outlet />
     </>
   )
 } export default Home

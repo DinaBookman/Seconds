@@ -1,7 +1,10 @@
 import { useState, useContext } from 'react';
 import { NavLink } from "react-router-dom";
 import { UserContext } from '../../App';
-import './Navbar.css'; // Assuming you saved the CSS in Navbar.css
+import './Navbar.css'; 
+import { LuLogIn } from "react-icons/lu";
+import { RiAdvertisementFill } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
 
 function Navbar() {
   const [currentUser, setCurrentUser] = useContext(UserContext);
@@ -24,27 +27,9 @@ function Navbar() {
     <div className="App">
       <header className="App-header">
         <nav className="navbar">
-          <p className="logo">Seconds</p>
+          <p className="logo">SECONDS</p>
           <ul className={`navMenu ${isActive ? 'active' : ''}`}>
-            {!currentUser ? (
-              <li onClick={removeActive}>
-                <NavLink to="/auth/login">Connect</NavLink>
-              </li>
-            ) : (
-              <li
-                className={`nav-item ${dropdownActive ? 'active' : ''}`}
-                onMouseEnter={toggleDropdown}
-                onMouseLeave={toggleDropdown}
-                onClick={toggleDropdown}
-              >
-                <NavLink  className="nav-link">Profile</NavLink>
-                <div className="dropdown-menu">
-                  <NavLink to="profile/myProfile" className="dropdown-item">My Profile</NavLink>
-                  <NavLink to="profile/myProducts" className="dropdown-item">My Products</NavLink>
-                  <NavLink to="/logout" className="dropdown-item">Logout</NavLink>
-                </div>
-              </li>
-            )}
+            
             <li onClick={removeActive}>
               <NavLink to="sofas">Sofas</NavLink>
             </li>
@@ -60,11 +45,27 @@ function Navbar() {
             <li onClick={removeActive}>
               <NavLink to="beds">Beds</NavLink>
             </li>
+            {!currentUser ? (
+              <li onClick={removeActive}>
+                <NavLink to="/auth/login"><LuLogIn size={30}/></NavLink>
+              </li>
+            ) : (
+              <li
+                className={`nav-item ${dropdownActive ? 'active' : ''}`}
+                onMouseEnter={toggleDropdown}
+                onMouseLeave={toggleDropdown}
+                onClick={toggleDropdown}
+              >
+                <NavLink  className="nav-link"><CgProfile size={30} /></NavLink>
+                <div className="dropdown-menu">
+                  <NavLink to="profile/myProfile" className="dropdown-item">My Profile</NavLink>
+                  <NavLink to="profile/myProducts" className="dropdown-item">My Products</NavLink>
+                  <NavLink to="/logout" className="dropdown-item">Logout</NavLink>
+                </div>
+              </li>
+            )}
             <li onClick={removeActive}>
-              <NavLink to="all">All</NavLink>
-            </li>
-            <li onClick={removeActive}>
-              <NavLink to="post">Post Add</NavLink>
+              <NavLink to="post"><RiAdvertisementFill size={30} /></NavLink>
             </li>
           </ul>
           <div className={`hamburger ${isActive ? 'active' : ''}`} onClick={toggleActiveClass}>

@@ -1,6 +1,6 @@
 
 import { UserLoginService } from "../service/userLoginService.js";
-import { verifyRecaptcha } from "../service/recaptchaService.js";
+// import { verifyRecaptcha } from "../service/recaptchaService.js";
 import jwt from 'jsonwebtoken';
 
 export class UserLoginController {
@@ -8,12 +8,12 @@ export class UserLoginController {
     async checkUserLogin(req, res, next) {
         try {
             const { token, ...userData } = req.body;
-            const isRecaptchaValid = await verifyRecaptcha(token);
+            // const isRecaptchaValid = await verifyRecaptcha(token);
 
-            // Check reCAPTCHA validation result
-            if (!isRecaptchaValid.success) {
-                return res.status(400).json({ message: 'reCAPTCHA verification failed.' });
-            }
+            // // Check reCAPTCHA validation result
+            // if (!isRecaptchaValid.success) {
+            //     return res.status(400).json({ message: 'reCAPTCHA verification failed.' });
+            // }
 
             const userLoginService = new UserLoginService();
             console.log(userData.data)

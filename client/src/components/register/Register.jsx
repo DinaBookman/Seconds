@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState,useRef } from 'react'
 import { Link } from 'react-router-dom';
 import UserDetailes from './UserDetailes';
 import { useForm } from "react-hook-form";
 import { fetchUserLogin } from '../../api';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { RECAPTCHA_SITE_KEY, RECAPTCHA_DATA_SITE_KEY } from '../../env'
 
 const Register = () => {
 
     const [exist, setExist] = useState("");
     const [input, setInput] = useState({ name: "", password: "" })
+    const [recaptchaError, setRecaptchaError] = useState(false);
+    const captchaRef = useRef(null);
 
     const {
         register,
@@ -15,9 +19,10 @@ const Register = () => {
         formState: { errors }
     } = useForm();
 
-    const isExist =async (name) => {
+    const isExist = async (name,token) => {
+ 
         try {
-            const reasult = await fetchUserLogin(name);
+            const reasult = await fetchUserLogin(name,token);
             if (reasult.length)
                 setExist("exist")
             else
@@ -33,8 +38,16 @@ const Register = () => {
             setExist("notValid");
             return
         }
+        const token = captchaRef.current.getValue();
+
+        if (!token) {
+          setRecaptchaError(true);
+          return;
+        }
+        setRecaptchaError(false)
+        captchaRef.current.reset();
         setInput({ name: data.username, password: data.password })
-        isExist(data.username);
+        isExist(data.username,token);
 
     }
 
@@ -43,6 +56,7 @@ const Register = () => {
             <h1>sign up</h1>
             {exist === "notValid" && <div>not valid input</div>}
             {exist === "exist" && <div>you are an existing user please log in!</div>}
+            {recaptchaError && <div>Please verify that you are not a robot.</div>}
             {exist === "notExist" ? <UserDetailes username={input.name} password={input.password} /> :
                 <div>
                     <form noValidate onSubmit={handleSubmit(signUp)}>
@@ -63,6 +77,10 @@ const Register = () => {
                                 required: "password verification is required.",
                             })} />
                         {errors.passwordVerification ? <p>{errors.passwordVerification.message}</p> : <br />}
+                        <ReCAPTCHA sitekey={RECAPTCHA_SITE_KEY}
+                            ref={captchaRef}
+                        />
+                        <div className="h-captcha" data-sitekey={RECAPTCHA_DATA_SITE_KEY}></div>
 
                         <input type="submit" value="Sign Up" />
                     </form>

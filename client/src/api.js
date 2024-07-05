@@ -248,9 +248,9 @@ export const updateUser = async (userId, updatedUser) => {
     }
 };
 
-export const fetchUserLogin = async (username) => {
+export const fetchUserLogin = async (username, token) => {
     try {
-        const response = await fetch(`${API_URL}/userLogin?username=${username}`);
+        const response = await fetch(`${API_URL}/userLogin?username=${username}&token=${token}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

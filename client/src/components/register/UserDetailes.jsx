@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { UserContext } from '../../App'
+import { RegisterContext } from '../../App'
 import { addUser } from '../../api';
 
 const UserDetailes = ({ username, password }) => {
   const navigate = useNavigate();
-  // const [currentUser, setCurrentUser] = useContext(UserContext);
+  const [signup, setSignup] = useContext(RegisterContext);
 
   const {
     register,
@@ -17,20 +17,7 @@ const UserDetailes = ({ username, password }) => {
     formState: { errors }
   } = useForm();
 
-  // const goToHome = (userId,data) => {
-  //     setCurrentUser({
-  //         id: userId,
-  //         name: data.name,
-  //         email: data.email,
-  //         street: data.street,
-  //         city: data.city,
-  //         zipcode: data.zipcode,
-  //         phone: data.phone,
-  //         website: data.website
-  //     })
-  //     localStorage.setItem('currentUser', JSON.stringify({ id: data.id }));
-  //     navigate(`/home/users/${userId}`)
-  // }
+
 
   const addDetailes = async (data) => {
     const user = {
@@ -43,11 +30,10 @@ const UserDetailes = ({ username, password }) => {
       username: username,
       password: password
     };
-    console.log(username, password)
     try {
-      const userId =await addUser(user);
-      goToHome(userId, data)
-
+      const userId = await addUser(user);
+      setSignup(true)
+      navigate(`/auth/login`)
     } catch (error) {
       alert("oops somthing went wrong... please try again!")
     }

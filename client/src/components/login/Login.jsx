@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { UserContext } from '../../App';
+import { UserContext,RegisterContext } from '../../App';
 import { checkUserLogin } from '../../api';
 import { RECAPTCHA_SITE_KEY, RECAPTCHA_DATA_SITE_KEY } from '../../env'
 
@@ -11,6 +11,7 @@ import { RECAPTCHA_SITE_KEY, RECAPTCHA_DATA_SITE_KEY } from '../../env'
 const Login = () => {
 
   const [currentUser, setCurrentUser] = useContext(UserContext);
+  const [signup,setSignup]=useContext(RegisterContext);
   const [exist, setExist] = useState(true);
   const [recaptchaError, setRecaptchaError] = useState(false);
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const Login = () => {
       localStorage.setItem("currentUser", JSON.stringify(user))
       setExist(true);
       setCurrentUser(user);
+      setSignup(false)
       const from = location.state?.from || '/home';
       navigate(from);
     } catch (error) {
@@ -56,6 +58,7 @@ const Login = () => {
     <>
       <div><Link style={{ textDecoration: 'underline' }} to={'/home'}>exit connect</Link></div>
       <h1>login</h1>
+      {signup && <div>you had successfully signed up now please login</div>}
       {!exist && <div>Incorrect username or password</div>}
       {recaptchaError && <div>Please verify that you are not a robot.</div>}
       <form noValidate onSubmit={handleSubmit(logIn)}>

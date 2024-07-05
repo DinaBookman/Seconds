@@ -194,7 +194,6 @@ const MyProfile = () => {
         <>
             <h1>My Profile</h1>
             <form noValidate onSubmit={handleSubmit(onSubmit)}>
-                {console.log(user.name, "  name")}
                 <input
                     type="text"
                     name="name"

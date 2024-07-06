@@ -243,7 +243,6 @@ export const updateUser = async (userId, updatedUser) => {
 
         return await response.json();
     } catch (error) {
-        console.error('Error updating user:', error);
         throw error; 
     }
 };
@@ -334,7 +333,5 @@ export const refreshToken = async () => {
      
         return tokens;
     } catch (error) {
-        console.error('Error refreshing token:', error);
-        throw error; 
-    }
-};
+        throw new Error('Refresh token failed.'); 
+}}

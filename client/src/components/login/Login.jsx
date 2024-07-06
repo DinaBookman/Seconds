@@ -58,7 +58,7 @@ const Login = () => {
     <>
       <div><Link style={{ textDecoration: 'underline' }} to={'/home'}>exit connect</Link></div>
       <h1>login</h1>
-      {signup && <div>you had successfully signed up now please login</div>}
+      {signup && <div>You successfully signed up! Please login now.</div>}
       {!exist && <div>Incorrect username or password</div>}
       {recaptchaError && <div>Please verify that you are not a robot.</div>}
       <form noValidate onSubmit={handleSubmit(logIn)}>

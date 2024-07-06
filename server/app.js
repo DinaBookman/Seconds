@@ -1,9 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser';
-import mysql2 from 'mysql2';
-import multer from 'multer';
-import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import cookieParser from 'cookie-parser';
@@ -12,22 +9,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 import { productsRouter } from './router/productsRouter.js';
-// import { todosRouter } from './router/todosRouter.js';
-// import { postsRouter } from './router/postsRouter.js';
-// import { commentsRouter } from './router/commentsRouter.js';
 import { usersRouter } from './router/usersRouter.js';
 import { userLoginRouter } from './router/userLoginRouter.js';
 import { categoriesRouter } from './router/categoriesRouter.js';
 import { statusesRouter } from './router/statusesRouter.js';
-import { verifyToken } from './middleware/verifyToken.js';
-// import {Errors} from './middleware/errors.js'
+
 const server = express();
 server.use('/uploads', express.static('uploads'));
 
 server.use(cors({
     origin: true,
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'], // מתודות המורשות
-    allowedHeaders: ['Content-Type', 'Authorization'] ,// כותרות מותרות
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'] ,
     credentials: true
 }))
 server.use(express.json());
@@ -52,9 +45,6 @@ server.use('/users',usersRouter);
 server.use('/categories',categoriesRouter);
 server.use('/statuses',statusesRouter);
 
-
-
-// server.use(Errors);
 
 server.listen(8080, (err) => {
     if (err) console.error(err);

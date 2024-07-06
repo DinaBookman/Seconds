@@ -1,6 +1,7 @@
 
 import { ProductsService } from "../service/productsService.js";
 
+import 'dotenv/config';
 
 export class ProductsController {
 

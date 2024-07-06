@@ -10,7 +10,7 @@ const SearchSlider = ({setFilters}) => {
   };
   return (
     <div style={{ padding: '50px' }}>
-      <h2>Range Slider Example</h2>
+      <h5>select price range</h5>
       <div
         onMouseUp={()=> {setFilters((prevFilters)=>({...prevFilters,priceMin:range[0],priceMax:range[1]}))}}
         onTouchEnd={()=> {setFilters((prevFilters)=>({...prevFilters,priceMin:range[0],priceMax:range[1]}))}}

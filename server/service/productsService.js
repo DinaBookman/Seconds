@@ -1,5 +1,4 @@
-// import multer from 'multer';
-// import path from 'path';
+
 import { executeQuery } from './db.js';
 import { getProductsJoinTable, getQuery, getByIdQuery, addQuery, deleteQuery, updateQuery, getProductByIdQuery } from './queries.js';
 

@@ -1,33 +1,48 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { LoadScript, StandaloneSearchBox } from '@react-google-maps/api';
+import { GOOGLE_MAPS_API_KEY } from '../../env';
 
 const libraries = ['places'];
-const googleMapsApiKey = 'AIzaSyC-zv83AST4XvhbahDnbXnCb--dYpaIxV0'; // Replace with your API key
+const googleMapsApiKey = GOOGLE_MAPS_API_KEY;
+
 
 const PlaceAutocomplete = ({ address, setAddress, setFilters }) => {
-  // const [address, setAddress] = useState('');
+  const [inputValue, setInputValue] = useState('');
+
   const searchBoxRef = useRef(null);
 
   const handlePlaceChanged = () => {
     const places = searchBoxRef.current.getPlaces();
-    //if (places.length === 0) return;
-
     const place = places[0];
-    setAddress(place.vicinity);
-    setAddress(place.vicinity);
-    if (setFilters)
-      setFilters((prevFilters) => ({ ...prevFilters, area: place.vicinity }))
-    console.log(place); // Handle the place details as needed
+    setAddress(place?.vicinity || ''); // Set address or empty string if no place is selected
+    if (setFilters) {
+      setFilters((prevFilters) => ({ ...prevFilters, area: place?.vicinity || '' }));
+    }
+  };
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+    if (event.target.value === '') { 
+      setAddress('');
+
+      setFilters((prevFilters) => {
+        const { area, ...rest } = prevFilters; 
+        return { ...rest };
+      });
+
+    }
   };
 
   return (
     <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
       <StandaloneSearchBox
-        onLoad={ref => (searchBoxRef.current = ref)}
+        onLoad={(ref) => (searchBoxRef.current = ref)}
         onPlacesChanged={handlePlaceChanged}
       >
         <input
           type="text"
+          value={inputValue}
+          onChange={handleInputChange}
           placeholder="Enter your address"
           style={{
             boxSizing: `border-box`,

@@ -23,9 +23,6 @@ const UserDetailes = ({ username, password }) => {
     const user = {
       name: data.name,
       email: data.email,
-      rating: 0,
-      reviews: "",
-
       phone: data.phone,
       username: username,
       password: password

@@ -2,6 +2,7 @@ import { executeQuery } from './db.js';
 import { getQuery, getByIdQuery, addQuery, deleteQuery, updateQuery } from './queries.js';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import 'dotenv/config';
 const SALTROUNDS = 10;
 
 export class UserLoginService {
@@ -24,8 +25,8 @@ export class UserLoginService {
         if (result.length != 0 && !bcrypt.compare(newUser.password, result[0].password))
             throw new Error("Password error")
 
-        const token = jwt.sign({ id: result[0].username }, "privateKey", { expiresIn: '20m' });
-        const refreshtoken = jwt.sign({ id: result[0].username }, "keyrefresh", { expiresIn: '1d' });
+        const token = jwt.sign({ id: result[0].username }, process.env.WEB_TOKEN_KEY, { expiresIn: '20m' });
+        const refreshtoken = jwt.sign({ id: result[0].username }, process.env.WEB_TOKEN_REFRESH_KEY, { expiresIn: '1d' });
         console.log(token, refreshtoken)
         return [token, refreshtoken,{id:result[0].id,usename:result[0].username}];
     }

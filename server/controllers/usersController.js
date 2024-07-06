@@ -24,7 +24,7 @@ export class UserController {
         try {
             const usersService = new UsersService();
             const {name,email ,phone ,rating ,reviews,username,password}=req.body;
-            const resultItem = await usersService.addUser({name:name,email:email ,phone:phone ,rating:rating ,reviews:reviews});
+            const resultItem = await usersService.addUser({name:name,email:email ,phone:phone });
             const userId=  resultItem.insertId;
             const userLoginService = new UserLoginService();
             await userLoginService.addUserLogin( {id:userId, username:username,password:password  });

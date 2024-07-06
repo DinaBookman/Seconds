@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import PlaceAutocomplete from '../searches/PlaceAutoComplete';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { getCategories, getStatuses } from '../../api';
+import { UserContext } from '../../App';
 import './ProductForm.css';
 
 const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
-  const { register, handleSubmit, formState: { errors }, control, setError } = useForm({
+  const { register, handleSubmit, formState: { errors }, control, setError, clearErrors } = useForm({ // Added clearErrors
     defaultValues: product || {},
   });
+  const [currentUser, setCurrentUser] = useState(UserContext)
   const [address, setAddress] = useState(product?.area || '');
   const [statusOptions, setStatusOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
@@ -43,19 +45,27 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
   };
 
   useEffect(() => {
+   if(address!=''){
+    clearErrors('area');
+   }
+  }, [address]);
+
+  useEffect(() => {
     fetchStatusOptions();
     fetchCategoryOptions();
   }, []);
 
   const onSubmit = async (data) => {
     let hasError = false;
-
+    console.log(setData && address === '' && !product?.area)
     if (setData && address === '' && !product?.area) {
       setError('area', {
         type: 'manual',
         message: 'Area is required',
       });
       hasError = true;
+    } else {
+      clearErrors('area'); // Clear errors if validation passes
     }
 
     if (setData && !(data.image && data.image.length > 0) && !product?.img) {
@@ -64,6 +74,8 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
         message: 'Image is required',
       });
       hasError = true;
+    } else {
+      clearErrors('image'); // Clear errors if validation passes
     }
 
     if (hasError) {
@@ -71,7 +83,7 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
     }
 
     const formData = new FormData();
-    formData.append('ownerId', 1);
+    formData.append('ownerId', currentUser?.id||JSON.parse(localStorage.getItem("currentUser")).id);
 
     if (data.title !== product?.title) {
       formData.append('title', data.title);
@@ -184,7 +196,7 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
 
       <div>
         <label htmlFor="area">Area</label>
-        <PlaceAutocomplete address={address} setAddress={setAddress} required={setData!=undefined} />
+        <PlaceAutocomplete address={address} setAddress={setAddress} required={!!setData} /> {/* Updated required prop */}
         {errors.area && <p>{errors.area.message}</p>}
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useState,useRef } from 'react'
 import { Link } from 'react-router-dom';
-import UserDetailes from './UserDetailes';
+import UserDetailes from './userDetails/UserDetailes';
 import { useForm } from "react-hook-form";
 import { fetchUserLogin } from '../../api';
 import ReCAPTCHA from 'react-google-recaptcha';

@@ -11,7 +11,7 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
   const { register, handleSubmit, formState: { errors }, control, setError, clearErrors } = useForm({ 
     defaultValues: product || {},
   });
-  const [currentUser, setCurrentUser] = useState(UserContext)
+  const [currentUser, setCurrentUser] = useContext(UserContext)
   const [address, setAddress] = useState(product?.area || '');
   const [statusOptions, setStatusOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
@@ -80,7 +80,7 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
     }
 
     const formData = new FormData();
-    formData.append('ownerId', currentUser?.id||JSON.parse(localStorage.getItem("currentUser")).id);
+    formData.append('ownerId', currentUser.id||JSON.parse(localStorage.getItem("currentUser")).id);
 
     if (data.title !== product?.title) {
       formData.append('title', data.title);

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { RegisterContext } from '../../App';
-import { addUser } from '../../api';
+import { RegisterContext } from '../../../App';
+import { addUser } from '../../../api';
 import styles from './UserDetailes.module.css'; // Import your CSS file
 
 const UserDetailes = ({ username, password }) => {

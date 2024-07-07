@@ -36,7 +36,12 @@ const MyProducts = () => {
         try {
             const reasult = await removeProduct(productId);
             setIsDelete(-1)
-            getMyProducts();
+            if(!currentUser){
+                getMyProducts(JSON.parse(localStorage.getItem("currentUser")).id)
+            }
+            else{
+                getMyProducts(currentUser.id)
+            }
         }
         catch (error) {
             if (error.message.includes('Refresh token failed')) {

@@ -10,10 +10,10 @@ export class UserLoginController {
       const { token, ...userData } = req.body;
 
       const userLoginService = new UserLoginService();
-      console.log(userData.data)
+
 
       const [jwtToken, refreshtoken, result] = await userLoginService.checkUserLogin(userData.data);
-      console.log(jwtToken, refreshtoken)
+
       res.cookie('x-access-token', jwtToken, {
         httpOnly: true, secure: true, maxAge: 30 * 24 * 60 * 60 * 1000, sameSite: 'strict'
       })
@@ -66,14 +66,12 @@ export class UserLoginController {
     }
 
     try {
-      console.log("rshtsssssssss");
+
       const decoded = jwt.verify(refreshToken, "keyrefresh");
-      if (!decoded) {
-        console.log("fgxhcjvvcghjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-      }
-      console.log(decoded, "rshtsssssssss");
+
+
       const accessToken = jwt.sign({ id: decoded.id }, "privateKey", { expiresIn: '20m' });
-      console.log(accessToken, "rshtsssssssss");
+
       res.cookie('x-access-token', accessToken, { httpOnly: true, secure: true, maxAge: 20 * 60 * 1000 }); // 20 minutes
       res.status(200).json({ accessToken });
     } catch (error) {

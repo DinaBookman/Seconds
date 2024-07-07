@@ -14,7 +14,7 @@ const PlaceAutocomplete = ({ address, setAddress, setFilters }) => {
   const handlePlaceChanged = () => {
     const places = searchBoxRef.current.getPlaces();
     const place = places[0];
-    setAddress(place?.vicinity || ''); // Set address or empty string if no place is selected
+    setAddress(place?.vicinity || ''); 
     if (setFilters) {
       setFilters((prevFilters) => ({ ...prevFilters, area: place?.vicinity || '' }));
     }

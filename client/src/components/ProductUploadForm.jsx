@@ -9,7 +9,7 @@ const ProductUploadForm = () => {
   const [currentUser, setCurrentUser] = useContext(UserContext);
   const navigate = useNavigate();
 
-  // Check if the user is logged in
+
   useEffect(() => {
     if (!currentUser&& !JSON.parse(localStorage.getItem("currentUser"))) {
       navigate('/auth/login', { state: { from: '/home/post' } });
@@ -17,14 +17,12 @@ const ProductUploadForm = () => {
   }, [currentUser, navigate]);
 
   const postProduct = async () => {
-    console.log("kkk", data)
     if (data) {
       try {
         const result = await addProduct(data);
         alert("uploaded successfuly");
         navigate('/home')
       } catch (error) {
-        console.error('Error uploading product:', error);
         alert('Error uploading product');
       }
     }

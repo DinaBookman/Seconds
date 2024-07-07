@@ -1,0 +1,45 @@
+.product-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .product-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .product-area {
+    font-weight: bold;
+  }
+  
+  .product-price {
+    font-style: italic;
+  }
+  
+  .product-status {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .status-new {
+    color: green; /* Highlight "new" status in green */
+  }
+  
+  .status-great {
+    color: blue; /* Highlight "great" status in blue */
+  }
+  
+  .status-good {
+    color: #00aaff; /* Highlight "good" status in a different shade of blue */
+  }
+  
+  .status-not-bad {
+    color: #ffa500; /* Highlight "not bad" status in orange */
+  }
+  
+  .status-bad {
+    color: red; /* Highlight "bad" status in red */
+  }
+  

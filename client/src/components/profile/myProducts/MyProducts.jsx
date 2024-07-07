@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from '../../App'
+import { UserContext } from '../../../App'
 import { MdModeEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-import Product from "../Product";
-import UpdateProduct from "../UpdateProduct";
-import { fetchProducts, removeProduct } from "../../api";
+import Product from "../../product/Product";
+import UpdateProduct from "../../UpdateProduct";
+import { fetchProducts, removeProduct } from "../../../api";
 import './MyProducts.css'; 
 
 const MyProducts = () => {
@@ -16,11 +16,10 @@ const MyProducts = () => {
     const getMyProducts = async (id) => {
         try {
             const result = await fetchProducts(`ownerId=${id}`);
-            console.log(result);
             setMyProducts(result);
         }
         catch (err) {
-            console.error(err);
+            alert("oops somthing went wrong...")
         };
     }
 

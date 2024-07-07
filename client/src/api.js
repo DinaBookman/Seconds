@@ -2,7 +2,6 @@ import { API_URL } from "./env";
 export const fetchProducts = async (query) => {
     try {
         const response = await fetch(`${API_URL}/products?${query}`);
-        console.log(query)
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -29,7 +28,6 @@ export const fetchProduct = async (productId) => {
 
 export const addProduct = async (data) => {
     try {
-        console.log("fxhgfchkvjk",`${API_URL}/products`)
         let response = await fetch(`${API_URL}/products`, {
             method: 'POST',
             body: data,
@@ -38,7 +36,6 @@ export const addProduct = async (data) => {
                 'Accept': 'application/json',
             },
         });
-        console.log("grhjdhfkjjjjjjjjjjh");
         if (response.status === 401) {
 
             const tokens = await refreshToken();
@@ -274,7 +271,6 @@ export const checkUserLogin = async (data, token) => {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         });
-        console.log("dfghklgjfzdxghjkhjgf")
         if (!response.ok) {
             throw new Error('Login failed');
         }

@@ -2,8 +2,8 @@ import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Zoom } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
-import Navbar from './navBar/NavMenu';
-import { API_URL } from '../env';
+import Navbar from '../navBar/NavMenu';
+import { API_URL } from '../../env';
 
 function Home() {
   const location = useLocation();

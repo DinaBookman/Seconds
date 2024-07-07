@@ -37,11 +37,8 @@ const Login = () => {
     }
     setRecaptchaError(false)
     captchaRef.current.reset();
-    console.log(token)
     try {
       const user = await checkUserLogin(data, token);
-
-      console.log(user)
       localStorage.setItem("currentUser", JSON.stringify(user))
       setExist(true);
       setCurrentUser(user);
@@ -50,7 +47,6 @@ const Login = () => {
       navigate(from);
     } catch (error) {
       setExist(false);
-      console.error('Error logging in:', error);
     }
   };
 

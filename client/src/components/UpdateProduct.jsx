@@ -15,10 +15,9 @@ const UpdateProduct = ({ product, setIsUpdate, getMyProducts }) => {
             } catch (error) {
                 if (error.message.includes('Refresh token failed')) {
                     alert('Session expired. Please log in again.');
-                    navigate('/login'); // Navigate to the login page
+                    navigate('/login'); 
                 }
                 else {
-                    console.error(error);
                     alert('Error updating product');
                 }
             }

@@ -43,7 +43,6 @@ export class ProductsController {
         const productsService = new ProductsService();
         const imgSrc = req.file.filename;
         const productItem = req.body;
-        console.log(imgSrc,productItem,"fgxfchvjkb")
         try {
             const result = await productsService.addProduct(productItem, imgSrc);
             res.json({ message: 'Product added successfully', result });

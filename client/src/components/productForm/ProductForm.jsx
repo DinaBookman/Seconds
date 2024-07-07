@@ -8,7 +8,7 @@ import { UserContext } from '../../App';
 import './ProductForm.css';
 
 const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
-  const { register, handleSubmit, formState: { errors }, control, setError, clearErrors } = useForm({ // Added clearErrors
+  const { register, handleSubmit, formState: { errors }, control, setError, clearErrors } = useForm({ 
     defaultValues: product || {},
   });
   const [currentUser, setCurrentUser] = useState(UserContext)
@@ -25,7 +25,6 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
       }));
       setStatusOptions(formattedOptions);
     } catch (error) {
-      console.error('Error fetching statuses:', error);
       alert('Oops something went wrong...');
     }
   };
@@ -39,7 +38,6 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
       }));
       setCategoryOptions(formattedOptions);
     } catch (error) {
-      console.error('Error fetching categories:', error);
       alert('Oops something went wrong...');
     }
   };
@@ -57,7 +55,6 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
 
   const onSubmit = async (data) => {
     let hasError = false;
-    console.log(setData && address === '' && !product?.area)
     if (setData && address === '' && !product?.area) {
       setError('area', {
         type: 'manual',
@@ -65,7 +62,7 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
       });
       hasError = true;
     } else {
-      clearErrors('area'); // Clear errors if validation passes
+      clearErrors('area'); 
     }
 
     if (setData && !(data.image && data.image.length > 0) && !product?.img) {
@@ -75,7 +72,7 @@ const ProductForm = ({ product, setEdit, setData, setIsUpdate }) => {
       });
       hasError = true;
     } else {
-      clearErrors('image'); // Clear errors if validation passes
+      clearErrors('image'); 
     }
 
     if (hasError) {

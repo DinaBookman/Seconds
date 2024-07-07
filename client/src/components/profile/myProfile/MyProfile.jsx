@@ -1,9 +1,9 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { UserContext } from '../../App';
+import { UserContext } from '../../../App';
 import PhoneInput from 'react-phone-input-2';
-import { fetchUser, updateUser } from "../../api";
-import './MyProfile.css'; // Import your CSS file
+import { fetchUser, updateUser } from "../../../api";
+import './MyProfile.css'; 
 
 const MyProfile = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext);
@@ -21,15 +21,13 @@ const MyProfile = () => {
         try {
             const result = await fetchUser(id);
             setUser(result[0]);
-            // Set default values for form fields
             setValue('name', result[0].name);
             setValue('email', result[0].email);
             setValue('phone', result[0].phone);
-            console.log(result[0]);
         } catch (error) {
             if (error.message.includes('Refresh token failed')) {
                 alert('Session expired. Please log in again.');
-                navigate('/login'); // Navigate to the login page
+                navigate('auth/login'); 
             }
             else {
                 alert("Oops, something went wrong... please try again!");
@@ -73,7 +71,6 @@ const MyProfile = () => {
         if (data.phone !== user?.phone) {
             updatedUser = { ...updatedUser, phone: data.phone }
         }
-        console.log(updatedUser, "  updated user");
         updateDetails(updatedUser);
     };
 

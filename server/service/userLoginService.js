@@ -8,7 +8,7 @@ const SALTROUNDS = 10;
 export class UserLoginService {
 
     async addUserLogin(newUser) {
-        console.log(newUser);
+  
         const query = addQuery('userlogin', [...Object.keys(newUser)]);
         const encryptPassword = await bcrypt.hash(newUser.password, SALTROUNDS);
         const result = await executeQuery(query, [newUser.id, newUser.username, encryptPassword]);
@@ -27,7 +27,7 @@ export class UserLoginService {
 
         const token = jwt.sign({ id: result[0].username }, process.env.WEB_TOKEN_KEY, { expiresIn: '20m' });
         const refreshtoken = jwt.sign({ id: result[0].username }, process.env.WEB_TOKEN_REFRESH_KEY, { expiresIn: '1d' });
-        console.log(token, refreshtoken)
+
         return [token, refreshtoken,{id:result[0].id,usename:result[0].username}];
     }
 

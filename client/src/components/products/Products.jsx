@@ -5,7 +5,7 @@ import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
 import Searches from "../searches/Searches";
 import "./Products.css";
-import Product from "../Product";
+import Product from "../product/Product";
 import { FaArrowUp } from "react-icons/fa";
 import { fetchProducts } from "../../api";
 
@@ -111,15 +111,20 @@ function Products() {
           loader={<h4>Loading...</h4>}
           endMessage={<p style={{ textAlign: 'center' }}><b>You have seen it all</b></p>}
         >
+          <div id="container">
           {products.map((product, i) => (
-            <div
+           <div id="product" 
               onClick={() => handleProductClick(product.id)}
               key={i}
-              className={`product-item ${fullView !== -1 && fullView !== i ? 'grayed-out' : ''}`}
+    
             >
               <Product product={product} />
             </div>
+            
+            
+            
           ))}
+          </div>
         </InfiniteScroll>
       </div>
       <Outlet />

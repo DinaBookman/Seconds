@@ -3,7 +3,6 @@ import express from 'express';
 import path from 'path';
 import multer from 'multer';
 
-//import { ProductsService } from '../service/productsService.js';
 import { ProductsController } from "../controllers/productsController.js";
 import { verifyToken } from '../middleware/verifyToken.js';
 const storage = multer.diskStorage({

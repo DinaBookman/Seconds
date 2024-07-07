@@ -19,7 +19,6 @@ const Searches = ({ address, setAddress, setSearchQuery, setFilters }) => {
     const getOptions = async () => {
         try {
             const reasult = await getStatuses();
-            console.log(reasult)
             const formattedOptions = reasult.map((status) => (
                 { value: status.description, label: status.description.toUpperCase() }))
             setOptions(formattedOptions);

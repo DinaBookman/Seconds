@@ -39,7 +39,6 @@ function Products() {
   useEffect(() => {
     if (searchQuery) {
       resetData();
-      console.log(searchQuery)
     }
   }, [searchQuery]);
 
@@ -74,7 +73,6 @@ function Products() {
 
 
   const handleProductClick = (productId) => {
-    console.log("Navigating to product:", productId);
     navigate(`${productId}`);
   };
 

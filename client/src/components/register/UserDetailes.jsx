@@ -31,7 +31,7 @@ const UserDetailes = ({ username, password }) => {
       setSignup(true);
       navigate(`/auth/login`);
     } catch (error) {
-      alert("Oops, something went wrong. Please try again!");
+      alert("Please enter unique email address");
     }
   };
 

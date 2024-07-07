@@ -12,8 +12,7 @@ import Profile from './components/profile/Profile.jsx';
 import Logout from './components/profile/Logout.jsx';
 import MyProducts from './components/profile/MyProducts.jsx';
 import MyProfile from './components/profile/MyProfile.jsx';
-// import SendCode from './components/login/SendVerificationCode.jsx';
-// import ResetPassword from './components/login/ResetPassword.jsx';
+
 
 export const UserContext = createContext();
 export const RegisterContext = createContext();

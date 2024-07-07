@@ -58,7 +58,7 @@ const Register = () => {
             {exist === "exist" && <div>you are an existing user please log in!</div>}
             {recaptchaError && <div>Please verify that you are not a robot.</div>}
             {exist === "notExist" ? <UserDetailes username={input.name} password={input.password} /> :
-                <div>
+                 <div className="container">
                     <form noValidate onSubmit={handleSubmit(signUp)}>
                         <input type='text' name='username' placeholder='username'
                             {...register("username", {
@@ -84,9 +84,10 @@ const Register = () => {
 
                         <input type="submit" value="Sign Up" />
                     </form>
+                      {exist != "notExist" && <div>Are you an existing user? <Link style={{ textDecoration: 'underline' }} to={'/auth/login'}>please login</Link></div>}
                 </div>
             }
-            {exist != "notExist" && <div>Are you an existing user? <Link style={{ textDecoration: 'underline' }} to={'/auth/login'}>please login</Link></div>}
+          
         </>
     );
 }

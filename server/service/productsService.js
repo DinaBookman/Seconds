@@ -5,8 +5,9 @@ import { getProductsJoinTable, getQuery, getByIdQuery, addQuery, deleteQuery, up
 export class ProductsService {
 
     async getProducts(url) {
-        const { category, priceMin, priceMax, area, status, sortBy, direction, limit, offset } = url;
+        const { ownerId,category, priceMin, priceMax, area, status, sortBy, direction, limit, offset } = url;
         const params = [
+            { field: 'ownerId', comparison: undefined, value: ownerId },
             { field: 'category', comparison: undefined, value: category },
             { field: 'price', comparison: '>=', value: priceMin },
             { field: 'price', comparison: '<=', value: priceMax },

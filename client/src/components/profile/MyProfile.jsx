@@ -1,9 +1,9 @@
-
 import React, { useEffect, useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { UserContext } from '../../App';
 import PhoneInput from 'react-phone-input-2';
 import { fetchUser, updateUser } from "../../api";
+import './MyProfile.css'; // Import your CSS file
 
 const MyProfile = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext);
@@ -78,7 +78,7 @@ const MyProfile = () => {
     };
 
     return (
-        <>
+        <div className='profile-container'>
             <h1>My Profile</h1>
             <form noValidate onSubmit={handleSubmit(onSubmit)}>
                 <input
@@ -137,7 +137,7 @@ const MyProfile = () => {
 
                 <input type="submit" value="Update Details" />
             </form>
-        </>
+        </div>
     );
 }
 

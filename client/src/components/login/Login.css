@@ -1,0 +1,57 @@
+/* Login.css */
+
+.container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input[type='text'],
+  input[type='password'],
+  input[type='submit'],
+  .h-captcha {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input[type='submit'] {
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  input[type='submit']:hover {
+    background-color: #45a049;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 5px;
+  }
+  
+  .success-message {
+    color: green;
+    margin-top: 5px;
+  }
+  
+  .link {
+    text-decoration: underline;
+    margin-top: 10px;
+  }
+  

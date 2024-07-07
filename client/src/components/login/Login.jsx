@@ -5,6 +5,8 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { UserContext,RegisterContext } from '../../App';
 import { checkUserLogin } from '../../api';
 import { RECAPTCHA_SITE_KEY, RECAPTCHA_DATA_SITE_KEY } from '../../env'
+import './Login.css'; // Import the CSS file
+
 
 
 
@@ -56,31 +58,30 @@ const Login = () => {
 
   return (
     <>
-      <div><Link style={{ textDecoration: 'underline' }} to={'/home'}>exit connect</Link></div>
-      <h1>login</h1>
-      {signup && <div>You successfully signed up! Please login now.</div>}
-      {!exist && <div>Incorrect username or password</div>}
-      {recaptchaError && <div>Please verify that you are not a robot.</div>}
+    <div><Link className="link" to={'/home'}>Exit Connect</Link></div>
+    <div className="container">
+      <h1>Login</h1>
+      {signup && <div className="success-message">You successfully signed up! Please login now.</div>}
+      {!exist && <div className="error-message">Incorrect username or password</div>}
+      {recaptchaError && <div className="error-message">Please verify that you are not a robot.</div>}
       <form noValidate onSubmit={handleSubmit(logIn)}>
-        <input type='text' name='username' placeholder='username'
+        <input type='text' name='username' placeholder='Username'
           {...register("username", {
-            required: "username is required.",
+            required: "Username is required.",
           })} />
-        {errors.username ? <p>{errors.username.message}</p> : <br />}
-        <input type="password" name="password" id="" placeholder='password'
+        {errors.username && <p className="error-message">{errors.username.message}</p>}
+        <input type="password" name="password" placeholder='Password'
           {...register("password", {
-            required: "password is required.",
+            required: "Password is required.",
           })} />
-        {errors.password ? <p>{errors.password.message}</p> : <br />}
-        <ReCAPTCHA sitekey={RECAPTCHA_SITE_KEY}
-          ref={captchaRef}
-        />
-        <div className="h-captcha" data-sitekey={RECAPTCHA_DATA_SITE_KEY}></div>
+        {errors.password && <p className="error-message">{errors.password.message}</p>}
+        <ReCAPTCHA sitekey={RECAPTCHA_SITE_KEY} ref={captchaRef} />
         <input type="submit" value="Log In" />
       </form>
-      <div>new here? <Link style={{ textDecoration: 'underline' }} to={'/auth/register'}>please sign up</Link></div>
-      {/* <div>Forgot your password? <Link style={{ textDecoration: 'underline' }} to={'/auth/forgot-password'}>Reset Password</Link></div> */}
-    </>
+      <div>New here? <Link className="link" to={'/auth/register'}>Please sign up</Link></div>
+    </div>
+  </>
+  
   )
 }
 export default Login

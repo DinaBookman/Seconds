@@ -59,7 +59,7 @@ const PlaceAutocomplete = ({ address, setAddress, setFilters }) => {
         />
       </StandaloneSearchBox>
       <div>
-        <strong>Selected Address: </strong>{address}
+        <h5><strong>Selected Area: </strong></h5>{address}
       </div>
     </LoadScript>
   );

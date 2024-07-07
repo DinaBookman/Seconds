@@ -49,14 +49,15 @@ const Searches = ({ address, setAddress, setSearchQuery, setFilters }) => {
 
     return <>
         <div className="searches">
+            <h5>enter your address inorder to select by area</h5>
             <PlaceAutocomplete address={address} setAddress={setAddress} setFilters={setFilters} />
             <SearchSlider setSearchQuery={setSearchQuery} setFilters={setFilters} />
+            <h5>select by status</h5>
             <Select
                 defaultValue={selectedOption}
                 autoFocus
                 menuPlacement="auto"
                 menuPosition="fixed"
-                // placeholder='Search by product status...'
                 components={animatecomponent}
                 isSearchable={true}
                 isClearable
@@ -66,6 +67,7 @@ const Searches = ({ address, setAddress, setSearchQuery, setFilters }) => {
                 getOptionValue={(options) => options["value"]}
             />
             <div>
+                <br /><h5>select order of products</h5>
                 <button onClick={toggleOrder}>
                     {ascending ? 'New to Old' : 'Old to New'}
                 </button>

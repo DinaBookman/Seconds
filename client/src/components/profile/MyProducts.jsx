@@ -13,7 +13,7 @@ const MyProducts = () => {
     const [isUpdate, setIsUpdate] = useState(-1);
     const [isDelete, setIsDelete] = useState(-1);
 
-    const getMyProducts = async (id = currentUser.id) => {
+    const getMyProducts = async (id) => {
         try {
             const result = await fetchProducts(`ownerId=${id}`);
             console.log(result);
@@ -25,7 +25,12 @@ const MyProducts = () => {
     }
 
     useEffect(() => {
-        getMyProducts(!currentUser && JSON.parse(localStorage.getItem("currentUser")).id);
+        if(!currentUser){
+            getMyProducts(JSON.parse(localStorage.getItem("currentUser")).id)
+        }
+        else{
+            getMyProducts(currentUser.id)
+        }
     }, [])
 
     const remove = async (productId) => {
@@ -37,7 +42,7 @@ const MyProducts = () => {
         catch (error) {
             if (error.message.includes('Refresh token failed')) {
                 alert('Session expired. Please log in again.');
-                navigate('/auth/login'); // Navigate to the login page
+                navigate('/auth/login'); 
             }
             else {
                 alert("oops somthing went wrong... please try again!");

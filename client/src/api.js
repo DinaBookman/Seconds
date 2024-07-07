@@ -2,6 +2,7 @@ import { API_URL } from "./env";
 export const fetchProducts = async (query) => {
     try {
         const response = await fetch(`${API_URL}/products?${query}`);
+        console.log(query)
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

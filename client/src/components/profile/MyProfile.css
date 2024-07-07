@@ -1,0 +1,46 @@
+/* styles.css */
+.profile-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .profile-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profile-container label {
+    margin-bottom: 8px;
+  }
+  
+  .profile-container input[type="text"],
+  .profile-container input[type="email"],
+  .profile-container input[type="tel"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .profile-container input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .profile-container input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  

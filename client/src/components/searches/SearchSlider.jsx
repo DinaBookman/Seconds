@@ -24,7 +24,7 @@ const SearchSlider = ({setFilters}) => {
       />
       </div>
       <div>
-        Selected Range: {range[0]} - {range[1]}
+        <h5>Selected Range: {range[0]} - {range[1]}</h5>
       </div>
     </div>
   );
